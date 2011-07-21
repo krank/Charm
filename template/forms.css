@@ -1,0 +1,178 @@
+.group {
+	width: 100%;
+	border-bottom: 2px solid #444444;
+	padding-right: 10px;
+	padding-bottom: 2em;
+}
+
+.groupheader {
+	width: 100%;
+	height: 36px;
+	background-color: #444444;
+	margin-top: 1em;
+	padding: 5px;
+	position: relative;
+	line-height: 36px;
+	margin-bottom: 1em;
+}
+
+
+.group a.button {
+	margin-left: 3em;
+}
+
+.group a.button.big {
+	float: left;
+	margin-left: 0;
+}
+
+.groupheader h2 {
+	color: #FFFFFF;
+	margin-bottom: 0;
+	margin-left: 48px;
+}
+
+.groupheader h2.hovered {
+	cursor: pointer;
+}
+
+.groupheader input {
+	border: none;
+	font-size: large;
+	font-family: sans-serif;
+	margin-left: 2.8em;
+	width: 23em;
+	margin-top: .4em;
+}
+
+
+.row {
+	padding-top: .5em;
+	margin-bottom: .5em;
+	margin-left: 3em;
+}
+
+.row .inner {
+	float: left;
+	height: 2em;
+	line-height: 2em;
+}
+
+.row a {
+	margin-top: .2em;
+}
+
+.row a.button {
+	margin-left: 0;
+}
+
+
+
+.row.hovered, .field.hovered {
+	background-color: #EEEEEE;
+}
+
+.field input {
+	border: 1px solid #444444;
+	margin-left: 5px;
+	width: 7em;
+	font-size: 1em;
+	float: left;
+	padding-left: .3em;
+}
+
+.field input.empty {
+	color: #CCCCCC;
+}
+
+
+.field {
+	margin-right: 2em;
+	position: relative;
+}
+
+.field a.button.single{
+	float: left;
+	margin-left: 5px;
+}
+
+.field.inner ul {
+	position: absolute;
+	right: -18px;
+	top: 20px;
+	background-color: #FFFFFF;
+	border: 1px solid #444444;
+	padding: 9px;
+	padding-bottom: 10px;
+	display: none;
+	border-radius: 4px;
+	z-index: 10000;
+}
+
+.field.inner li {
+	list-style: none;
+}
+
+.field.inner a {
+	position: relative;
+}
+
+.field.inner li a:hover {
+	background-color: #CCCCCC;
+}
+
+
+
+#sheet #footer {
+	margin-top: 1em;
+	padding-top: .2em;
+}
+
+
+#formdata {
+	border: 1px solid #444444;
+	border-radius: 5px;
+	padding: 1em;
+}
+
+#formdata .formline {
+	float: left;
+	margin-right: 2em;
+}
+
+.formtext {
+	padding-left: .5em;
+}
+
+#sheet table {
+	width: auto;
+	table-layout: fixed;
+}
+
+
+#sheet td {
+	vertical-align: middle;
+}
+
+#sheet td.static {
+	font-weight: bold;
+}
+
+#sheet td.text {
+	border-bottom: 1px solid black;
+}
+
+
+
+#sheet input {
+	border: 1px solid #444444;
+	margin-left: 5px;
+	width: 7em;
+	font-size: 1em;
+	float: left;
+	padding-left: .3em;
+}
+
+#sheet input.empty {
+	color: #CCCCCC;
+}

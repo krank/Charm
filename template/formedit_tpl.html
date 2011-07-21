@@ -1,0 +1,51 @@
+<link rel="stylesheet" href="template/forms.css" type="text/css">
+
+<script src="jquery/jquery.js" type="text/javascript"></script>
+<script src="jquery/forms.js" type="text/javascript"></script>
+
+|---
+<h2>%title%</h2>
+
+<div id="message" style="display:%msgdisplay%">
+%message%
+</div>
+
+<form action="./index.php?do=editform&formid=%formid%" method="post">
+	<div id="formdata">
+		<div>
+			<div class="formline">
+				<span class="formheader">Namn</span><br>
+				<input type="text" id="name" name="name" value="%name_str%" maxlength="64">
+				<div class="error" id="name_error">%name_err%</div>
+			</div>
+			<div class="formline">
+				<span class="formheader">System</span><br>
+				<input type="text" id="system" name="system" value="%system_str%" maxlength="64">
+				<div class="error" id="system_error">%system_err%</div>
+			</div>
+			<div class="formline">
+				<span class="formheader">Beskrivning</span><br>
+				<input type="text" id="desc" name="desc" value="%desc_str%" maxlength="128">
+				<div class="error" id="desc_error">%desc_err%</div>
+			</div>
+			<div style="clear: both;"></div>
+		</div>
+		<div class="formline">
+			<span class="formheader">Tillg&auml;nglighet</span><br>
+			<input type="radio" id="private" name="public" value="0" %privchecked% />Privat
+			<input type="radio" id="public"  name="public" value="1" %publchecked% />Tillg&auml;nglig f&ouml;r andra
+		</div>
+		<div style="clear: both;"></div>
+	</div>
+	
+	<div id="sheet">
+		<div id="groups">%xml_str%</div>
+		<div id="footer"></div>
+	</div>
+	
+	
+	<input type="hidden" name="formid" value="%formid%">
+	<input type="hidden" name="xml" id="xml">
+
+	<input type="submit" value="Spara" name="submit" id="save">
+</form>

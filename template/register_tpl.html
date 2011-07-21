@@ -1,0 +1,31 @@
+
+|---
+<h2>Registrera dig</h2>
+
+
+<form action="./index.php?do=register" method="post">
+	<div class="formline">
+		<span class="formheader">Anv&auml;ndarnamn</span>
+		<input type="text" id="username" name="name" value="%name_str%" maxlength="64">
+		<div class="error" id="username_error">%name_err%</div>
+	</div>
+	
+	<div class="formline">
+		<span class="formheader">E-mailadress</span>
+		<input type="text" id="mail" name="mail" value="%mail_str%" maxlength="1024">
+		<div class="error" id="mail_error">%mail_err%</div>
+	</div>
+	
+	<div class="formline">
+		<span class="formheader">L&ouml;senord</span>
+		<input type="password" id="password" name="pass" maxlength="64">
+	</div>
+	
+	<div class="formline">
+		<span class="formheader">Upprepa l&ouml;senord</span>
+		<input type="password" id="password2" name="pass2" maxlength="64">
+		<div class="error" id="password_error">%pass_err%</div>
+	</div>
+	
+	<input type="submit" value="Registrera!" name="submit">
+</form>
