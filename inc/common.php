@@ -596,7 +596,7 @@ function template($content="") {
 		$tr['%loggedinstr%'] = "Inloggad som " . $_SESSION['username'];
 
 	} else {
-		$menu = array(	'Alla rollpersoner' => 'public-chars',
+		$menu = array(	'Alla rollpersoner' => 'listchars',
 						'Alla rollformul&auml;r' => 'listforms',
 						'cmd1' => '',
 						'Logga in' => 'login',
