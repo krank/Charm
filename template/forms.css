@@ -171,7 +171,7 @@
 	border-bottom: 1px solid black;
 }
 
-#sheet td.number input {
+#sheet td input.number {
 	width: 2em;
 }
 

@@ -3,35 +3,36 @@
 
 $(document).ready(function() {
 	
+	
+	// Text and number cells should have input boxes in them
+	
 	$('td.text, td.number').each(function(){
 		value = $(this).text();
+		cls = $(this).attr('class');
 		
-		if ($(this).hasClass('text')) {
-			nulltext = "Ingen text";
-			cls = "text";
-		} else if ($(this).hasClass('number')) {
-			nulltext = "0";
-			cls = "number";
-		}
 		
 		$(this).empty()
-			.removeClass('text')
+			.removeClass(cls)
 			.append($('<input type="text">')
+						.addClass(cls)
 						.attr('value', value)
 						.attr('maxlength', 32)
 						.blur(function(){
-							if ($(this).attr('value') == '') {
-								$(this)
-									.attr('value', nulltext)
-									.addClass('empty');
-							} else if (cls == "number") {
+							
+							if ($(this).hasClass('number')) {
 								number = parseFloat($(this).attr('value'));
-								if (isNaN(number)) {
-									$(this).attr('value', '')
-										.blur();
+								if (isNaN(number)){
+									$(this).attr('value', '');
 								} else {
 									$(this).attr('value', number)
 								}
+							}
+							
+							if ($(this).attr('value') == '') {
+								if ($(this).hasClass('text')) $(this).attr('value', 'Ingen text');
+								else $(this).attr('value', 0);
+								
+								$(this).addClass('empty');
 							}
 						})
 						.bind('click keydown', function(){
