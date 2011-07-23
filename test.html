@@ -1,0 +1,56 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<script src="jquery/jquery.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			
+			$myXML = $('<grupper>').wrap('<xml>');
+			
+			
+			
+			$(document).ready(function() {
+				text="<bookstore><book>";
+				text=text+"<title>Everyday Italian</title>";
+				text=text+"<author>Giada De Laurentiis</author>";
+				text=text+"<year>2005</year>";
+				text=text+"</book></bookstore>";
+				
+				if (window.DOMParser) {
+					parser=new DOMParser();
+					xmlDoc=parser.parseFromString(text,"text/xml");
+				} else {// Internet Explorer
+					xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+					xmlDoc.async="false";
+					xmlDoc.loadXML(text); 
+				}
+			
+				//OK so now we may have an XML object...
+				
+				newel = xmlDoc.createElement("book");
+				
+				x=xmlDoc.getElementsByTagName("bookstore")[0];
+				x.appendChild(newel);
+				
+				var s = (new XMLSerializer()).serializeToString(xmlDoc);
+				
+		$('#box').append(s);
+				
+			})
+			
+		</script>
+		
+	</head>
+	<body class="kuk">
+		
+		<textarea id="box"></textarea>
+		<input id="xmlcontainer" type="hidden">
+		
+	</body>
+</html>

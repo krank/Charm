@@ -3,8 +3,17 @@
 
 $(document).ready(function() {
 	
-	$('td.text').each(function(){
+	$('td.text, td.number').each(function(){
 		value = $(this).text();
+		
+		if ($(this).hasClass('text')) {
+			nulltext = "Ingen text";
+			cls = "text";
+		} else if ($(this).hasClass('number')) {
+			nulltext = "0";
+			cls = "number";
+		}
+		
 		$(this).empty()
 			.removeClass('text')
 			.append($('<input type="text">')
@@ -13,18 +22,28 @@ $(document).ready(function() {
 						.blur(function(){
 							if ($(this).attr('value') == '') {
 								$(this)
-									.attr('value', 'Ingen text')
+									.attr('value', nulltext)
 									.addClass('empty');
+							} else if (cls == "number") {
+								number = parseFloat($(this).attr('value'));
+								if (isNaN(number)) {
+									$(this).attr('value', '')
+										.blur();
+								} else {
+									$(this).attr('value', number)
+								}
 							}
 						})
-						.click(function(){
+						.bind('click keydown', function(){
 							if ($(this).hasClass('empty')) {
 								$(this)
 									.attr('value', '')
 									.removeClass('empty');
 							}
 						})
+						.blur()
 				);
+					
 	});
 	
 	$('#save').click(function(){
@@ -91,6 +110,12 @@ function makeXML() {
 				if ($(this).hasClass('static')) {
 					type = 'static';
 					value = $(this).text();
+				} else if ($(this).hasClass('header')) {
+					type = 'header';
+					value = $(this).text();
+				} else if ($(this).hasClass('number')) {
+					type = 'number';
+					value = $(this).find('input').attr('value');
 				} else {
 					type = 'text';
 					value = $(this).find('input').attr('value');

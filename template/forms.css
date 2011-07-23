@@ -149,17 +149,30 @@
 	table-layout: fixed;
 }
 
-
 #sheet td {
 	vertical-align: middle;
+	border-left: 1em solid #FFFFFF;
 }
 
 #sheet td.static {
-	font-weight: bold;
+	/*font-weight: bold;*/
 }
 
 #sheet td.text {
 	border-bottom: 1px solid black;
+}
+
+#sheet td.header {
+	font-weight: bold;
+	border-bottom: 2px solid black;
+}
+
+#sheet td.number {
+	border-bottom: 1px solid black;
+}
+
+#sheet td.number input {
+	width: 2em;
 }
 
 

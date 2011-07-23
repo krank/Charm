@@ -104,6 +104,8 @@ function editform() {
 						$datasource['public'],
 						$datasource['desc'],
 						$datasource['xml']);
+					
+					$datasource['formid'] = $formid;
 				}
 
 				if ($formid) {

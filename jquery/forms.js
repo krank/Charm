@@ -237,11 +237,13 @@ function dynField($field) {
 	
 	if ($field.hasClass('static')) {
 		type = 'static';
+	} else if ($field.hasClass('header')) {
+		type = 'header';
+	} else if ($field.hasClass('number')) {
+		type = 'number';
 	} else {
 		type = 'text';
-	} 
-	
-	// "<a class=\"button single $type type\" href=\"#\"></a></div>"
+	}
 
 	$field.empty();
 	
@@ -255,7 +257,7 @@ function dynField($field) {
 					.addClass('empty');
 			}
 		})
-		.click(function(){
+		.bind('click keydown',function(){
 			if ($(this).hasClass('empty')) {
 				$(this)
 					.attr('value', '')
@@ -278,7 +280,9 @@ function dynField($field) {
 		.appendTo($field)
 		.append(
 			typeButton('Textbox', 'text'),
-			typeButton('Static text', 'static')
+			typeButton('Statisk text', 'static'),
+			typeButton('Rubrik', 'header'),
+			typeButton('Nummer', 'number')
 		)
 		.mouseleave(function(){
 			$(this).fadeOut('fast');
@@ -378,8 +382,12 @@ function makeXML() {
 				
 				if ($typeelem.hasClass('text')) {
 					type = 'text';
+				} else if ($typeelem.hasClass('header')) {
+					type = 'header';
 				} else if ($typeelem.hasClass('static')) {
 					type = 'static';
+				} else if ($typeelem.hasClass('number')) {
+					type = 'number';
 				}
 
 				fieldelem.setAttribute('type',type);
@@ -417,7 +425,7 @@ function typeButton(text, typeClass) {
 							.parentsUntil('ul')
 							.parent().fadeOut('fast')
 							.parent().children('.type')
-								.removeClass('text static')
+								.removeClass('text static header number')
 								.addClass(typeClass);
 						event.preventDefault();
 						return false;

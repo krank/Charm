@@ -294,6 +294,7 @@ function datalist($source, $title, $type, $newurl=False, $userid=False) {
 		$countquery = "SELECT COUNT(*) as num FROM $source WHERE public=1";
 		$douser = ""; // Save for later: Pager links should not include user's id
 	}
+	
 	$result = makequery($countquery);
 	$n = mysql_fetch_array($result);
 	$num_items = $n['num'];

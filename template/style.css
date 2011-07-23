@@ -52,6 +52,7 @@ body {
 #toptools a.button {
 	float: right;
 	border-bottom: 3px solid #CCCCCC;
+	margin-left: 1.5em;
 }
 
 #toptools a.button:hover {
@@ -120,12 +121,32 @@ a.cross {
 	background-image: url("../images/buttons/round_cross.png");
 }
 
+a.char {
+	background-image: url("../images/buttons/round_char.png");
+}
+
+a.edit {
+	background-image: url("../images/buttons/round_pen.png");
+}
+
+a.copy {
+	background-image: url("../images/buttons/round_copy.png");
+}
+
 a.text {
 	background-image: url("../images/buttons/square_t.png");
 }
 
 a.static {
 	background-image: url("../images/buttons/square_s.png");
+}
+
+a.header {
+	background-image: url("../images/buttons/square_r.png");
+}
+
+a.number {
+	background-image: url("../images/buttons/square_1.png");
 }
 
 
