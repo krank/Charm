@@ -152,6 +152,7 @@
 #sheet td {
 	vertical-align: middle;
 	border-left: 1em solid #FFFFFF;
+	padding-right: .3em;
 }
 
 #sheet td.static {
@@ -164,7 +165,7 @@
 
 #sheet td.header {
 	font-weight: bold;
-	border-bottom: 2px solid black;
+	border-bottom: 2pt solid black;
 }
 
 #sheet td.number {
@@ -197,4 +198,27 @@ a.move {
 
 a.move:hover {
 	cursor:move;
+}
+
+#sheet td a.right {
+	width: 9px;
+	float: left;
+	margin-left: 0px;
+}
+
+#sheet td a.left {
+	width: 9px;
+	float: left;
+	margin-right: 0px;
+	margin-left: .3em;
+}
+
+a.right.hidden, a.left.hidden {
+	background-image: none;
+}
+
+
+#sheet td input.number {
+	margin-left: 0px;
+	margin-right: .3em;
 }

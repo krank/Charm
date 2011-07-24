@@ -1,0 +1,21 @@
+#menu, #head, #toptools, h2 {
+	display: none;
+}
+
+body {
+	padding: 0;
+}
+
+#sheet h2 {
+	display: block;
+	margin-left: 0cm;
+	border-bottom: 2pt solid black;
+}
+
+#content, .group {
+	border: none;
+}
+
+.group, table {
+	page-break-inside: avoid;
+}

@@ -6,28 +6,29 @@ $(document).ready(function() {
 	
 	// Text and number cells should have input boxes in them
 	
+	tabindex = 1;
+	
 	$('td.text, td.number').each(function(){
 		value = $(this).text();
 		cls = $(this).attr('class');
+		tabindex += 1;
 		
 		
 		$(this).empty()
 			.removeClass(cls)
 			.append($('<input type="text">')
+						.attr('tabindex', tabindex)
 						.addClass(cls)
 						.attr('value', value)
 						.attr('maxlength', 32)
 						.blur(function(){
-							
+							// if the input box is a number box, get and parse the number
 							if ($(this).hasClass('number')) {
-								number = parseFloat($(this).attr('value'));
-								if (isNaN(number)){
-									$(this).attr('value', '');
-								} else {
-									$(this).attr('value', number)
-								}
+								addtovalue($(this), 0);
 							}
 							
+							// If the value of the imput box is '', set it to a default and
+							// make it show up as empty
 							if ($(this).attr('value') == '') {
 								if ($(this).hasClass('text')) $(this).attr('value', 'Ingen text');
 								else $(this).attr('value', 0);
@@ -35,7 +36,10 @@ $(document).ready(function() {
 								$(this).addClass('empty');
 							}
 						})
-						.bind('click keydown', function(){
+						.bind('click focus keydown', function(){
+							
+							$('.left, .right').addClass('hidden');
+							
 							if ($(this).hasClass('empty')) {
 								$(this)
 									.attr('value', '')
@@ -45,18 +49,74 @@ $(document).ready(function() {
 						.blur()
 				);
 					
+		if (cls == 'number') {
+			$('<a href="#"></a>')
+				.addClass('button single right')
+				.appendTo($(this));
+				
+			$('<a href="#"></a>')
+				.addClass('button single left')
+				.prependTo($(this));
+				
+			$(this).children('input')
+				.bind('focus click keydown', function(event) {
+					$(this).siblings('.left, .right').removeClass('hidden');
+					
+					if (event.keyCode == 37) {
+						$(this).siblings('.left').click();
+						$(this).focus();
+					}
+				});
+				
+			$(this).children('a')
+				.click( function(){
+					// Parse the input's value as a float
+					$boxelem = $(this).siblings('input');
+					
+					if ($(this).hasClass("right")) {
+						addition = 1;
+					} else {
+						addition = -1;
+					}
+					
+					addtovalue($boxelem, addition).removeClass('empty').blur();
+					// Prevent default
+					
+					event.preventDefault();
+					return false;
+				});
+		}
+					
 	});
+	
+	$('td input').first().focus();
 	
 	$('#save').click(function(){
 		makeXML();
 	});
 	
-	makeXML();
-	
 });
 
+function makenum(numstr) {
+	number = parseFloat(numstr);
+	if (isNaN(number)){
+		return false;
+	} else {
+		return number;
+	}
+}
 
 
+function addtovalue($box, addition) {
+	number = makenum($box.attr('value'));
+	
+	if (number !== false) {
+		$box.attr('value', number+addition);
+	} else {
+		$box.attr('value', '')
+	}
+	return $box;
+}
 
 function makeXML() {
 	// Create an XML document

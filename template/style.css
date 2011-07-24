@@ -153,6 +153,17 @@ a.move {
 	background-image: url("../images/buttons/round_move.png");
 }
 
+a.left {
+	background-image: url("../images/buttons/left.png");
+}
+
+a.right {
+	background-image: url("../images/buttons/right.png");
+	width: 9px;
+	float: left;
+	margin-left: 0;
+}
+
 
 /* -----------------------------------------------------------------------------
     Message box
