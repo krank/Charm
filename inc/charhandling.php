@@ -8,10 +8,6 @@ include_once 'inc/db.php';
 include_once 'inc/common.php';
 
 function editchar() {
-
-	$body = file_get_contents("template/charedit_tpl.html");
-	
-	
 	// Set defaults
 	$tr = array(	"%name_err%"	=> "",
 					"%system_err%"	=> "",
@@ -148,6 +144,7 @@ function editchar() {
 	
 	// Return template
 	
+	$body = file_get_contents("template/charedit_tpl.html");
 	$body = strtr($body,$tr);
 	return template($body);
 	

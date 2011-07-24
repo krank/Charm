@@ -323,7 +323,7 @@ function datalist($source, $title, $type, $newurl=False, $userid=False) {
 	// If the userid has been set, only show that user's forms	
 	if ($userid) {
 		// Use the user's name as title
-		$tr["%title%"] = $title . " - " . getuserbyid($userid);
+		$tr["%title%"] = $title . " - " . getuserbyid($userid, 'username');
 		
 		// Don't include the Creator/Owner table heading
 		$tr['%creator%'] = "";
@@ -372,7 +372,7 @@ function datalist($source, $title, $type, $newurl=False, $userid=False) {
 					$source.changed, 
 					users.username AS owner 
 				FROM $source,users 
-				WHERE public=1 AND $source.ownerid = users.id 
+				WHERE $source.public=1 AND $source.ownerid = users.id 
 				ORDER BY changed DESC LIMIT $offset,$maxitems";
 	}
 	
@@ -591,7 +591,7 @@ function template($content="") {
 						'cmd1' => '',
 						'Dina rollpersoner' => 'listchars&userid='.$_SESSION['userid'],
 						'Dina rollformul&auml;r' => 'listforms&userid='.$_SESSION['userid'],
-						'Din profil' => 'profile',
+						'Din profil' => 'showprofile',
 						'Logga ut' => 'logout'
 					);
 

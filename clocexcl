@@ -1,4 +1,8 @@
 ./jquery/jquery.js
 ./jquery/jquery-1.6.2.js
+./jquery/jquery-ui.js
+./jquery/jquery-ui-1.8.14.custom.js
 ./clocexcl
 ./clocme.sh
+./nbproject
+./.git

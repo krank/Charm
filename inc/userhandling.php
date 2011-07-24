@@ -9,7 +9,7 @@ function insert_user($username, $password, $email, $id=False){
 	mysql_query("INSERT INTO users(username, password, email) VALUES ('$username', md5('$password'), '$email')");
 }
 
-function modify_user($id, $username="", $password="", $email=""){
+function modify_user($id, $username="", $password="", $email="", $public){
 	// Modify a user in the database
 }
 
@@ -37,7 +37,25 @@ function get_user($username, $password) {
 	
 }
 
-function getuserbyid($id) {
+function getuserbyid($id, $field = "*") {
+	$id = intval($id);
+	
+	$result = makequery("SELECT $field FROM users WHERE id=$id");
+	$row = mysql_fetch_array($result);
+	
+	if ($row) {
+		if ($field != "*") {
+			return $row[$field];
+		} else {
+			return $row;
+		}
+	} else {
+		return false;
+	}
+}
+
+function getusernamebyid($id) {
+	$id = intval($id);
 	$result = makequery("SELECT username FROM users WHERE id=$id");
 	
 	$row = mysql_fetch_array($result);
@@ -47,7 +65,6 @@ function getuserbyid($id) {
 	} else {
 		return False;
 	}
-	
 }
 
 

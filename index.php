@@ -8,6 +8,7 @@ include_once 'inc/reghandling.php';
 include_once 'inc/loginhandling.php';
 include_once 'inc/formhandling.php';
 include_once 'inc/charhandling.php';
+include_once 'inc/profilehandling.php';
 
 session_start();
 
@@ -41,6 +42,8 @@ if (isset($_GET['do'])) {
 		print listchar();
 	} else if ($_GET['do'] == 'delchar') {
 		print delchar();
+	} else if ($_GET['do'] == 'showprofile') {
+		print showprofile();
 	} else {
 		print template("<h2>Ok&auml;nt kommando</h2>");
 	}

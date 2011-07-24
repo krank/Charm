@@ -1,0 +1,44 @@
+#image {
+	width: 160px;
+	float: left;
+	border-right: 1px solid #444444;
+}
+
+#imageframe {
+	width: 128px;
+	height: 128px;
+	padding: 3px;
+	background-color: #EEEEEE;
+	position: relative;
+}
+
+#imageframe img {
+}
+
+#data {
+	float: left;
+	border-left: 1px solid #444444;
+	height: 100%;
+	padding: 1em;
+	margin-left: -1px;
+}
+
+#streams {
+	border-top: 1px solid #444444;
+	margin-top: 1em;
+	padding: 1em;
+}
+
+#streams .stream {
+	width: 40%;
+	float: left;
+	padding: .5em;
+}
+
+#streams .stream:last-child {
+	border-left: 1px solid #444444;
+}
+
+#streams .stream h3 {
+	
+}
