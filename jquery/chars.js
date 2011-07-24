@@ -63,8 +63,11 @@ $(document).ready(function() {
 					$(this).siblings('.left, .right').removeClass('hidden');
 					
 					if (event.keyCode == 37) {
-						$(this).siblings('.left').click();
-						$(this).focus();
+						addtovalue($(this), -1);
+						event.preventDefault();
+					} else if (event.keyCode == 39) {
+						addtovalue($(this), +1);
+						event.preventDefault();
 					}
 				});
 				
@@ -73,15 +76,13 @@ $(document).ready(function() {
 					// Parse the input's value as a float
 					$boxelem = $(this).siblings('input');
 					
-					if ($(this).hasClass("right")) {
-						addition = 1;
-					} else {
-						addition = -1;
-					}
+					if ($(this).hasClass("right")) addition = 1;
+					else addition = -1;
 					
+					// Use addtovalue to make sure it's a number
 					addtovalue($boxelem, addition).removeClass('empty').blur();
-					// Prevent default
 					
+					// Prevent default
 					event.preventDefault();
 					return false;
 				});
@@ -174,7 +175,7 @@ function makeXML() {
 				} else if ($(this).hasClass('header')) {
 					type = 'header';
 					value = $(this).text();
-				} else if ($(this).hasClass('number')) {
+				} else if ($(this).children('input').hasClass('number')) {
 					type = 'number';
 					value = $(this).find('input').attr('value');
 				} else {
