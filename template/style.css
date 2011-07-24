@@ -149,6 +149,10 @@ a.number {
 	background-image: url("../images/buttons/square_1.png");
 }
 
+a.move {
+	background-image: url("../images/buttons/round_move.png");
+}
+
 
 /* -----------------------------------------------------------------------------
     Message box

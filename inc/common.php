@@ -63,7 +63,8 @@ function xmltoform($xmldata, $usetable=false) {
 							."<div class=\"groupheader\"><h2>$title</h2></div>\n";
 
 			
-			if ($usetable) $formhtml .= "\n\t<table>\n";
+			if ($usetable)	$formhtml .= "\n\t<table>\n";
+			else			$formhtml .= "\n\t<div class=\"rows\">\n";
 			
 			
 			$rows = $group->getElementsByTagName('row');
@@ -90,7 +91,8 @@ function xmltoform($xmldata, $usetable=false) {
 				else $formhtml .= "\n<div style=\"clear: both;\"></div>\n</div>";
 			}
 
-			if ($usetable) $formhtml .= '</table>';
+			if ($usetable)	$formhtml .= "\n\t</table>\n";
+			else			$formhtml .= "\n\t</div>\n";
 
 
 			$formhtml .= "</div>";

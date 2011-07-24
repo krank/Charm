@@ -50,12 +50,12 @@
 	padding-top: .5em;
 	margin-bottom: .5em;
 	margin-left: 3em;
+	line-height: 2em;
 }
 
 .row .inner {
 	float: left;
 	height: 2em;
-	line-height: 2em;
 }
 
 .row a {
@@ -188,4 +188,13 @@
 
 #sheet input.empty {
 	color: #CCCCCC;
+}
+
+
+a.move {
+	float: left;
+}
+
+a.move:hover {
+	cursor:move;
 }

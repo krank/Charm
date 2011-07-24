@@ -60,7 +60,11 @@ function makeDynamic() {
 function addGroup() {
 	
 	glen = $('#groups .group').length;
-	$groupelem = $('<div class="group" id="g'+glen+'"><div class="groupheader"></div></div>').hide()
+	$groupelem = $('<div class="group" id="g'+glen+'"><div class="groupheader"></div></div>')
+		.append($('<div></div')
+			.addClass('rows')
+			)
+		.hide()
 		.appendTo('#groups');
 	
 	$ghead = $groupelem.find('.groupheader');
@@ -72,6 +76,8 @@ function addGroup() {
 	if (glen >= MAX_GROUPS-1) {
 		$('#addgroup').fadeOut();
 	}
+	
+	
 	
 	dynGroup($groupelem);
 	
@@ -142,17 +148,21 @@ function dynGroup($group) {
 						$(this).fadeOut();
 					}
 				});
+				
+		// Make the rows sortable
+		
+		$group.children('.rows').sortable({'handle': '.move'});
 }
 
 function addRow(button) {
-	$parent = $(button).parent()
+	$parent = $(button).siblings('.rows');
 	plen = $parent.children('.row').length;
 
 	// Container
 	$rowelem = $('<div class="row"></div>')
 		.attr('id', $parent.attr('id')+'r'+plen)
 		.hide()
-		.insertBefore($(button));
+		.appendTo($parent);
 	
 	
 	
@@ -174,13 +184,27 @@ function dynRow($row) {
 	// Delete Row button
 	$('<a href="#" class="single del button"></a>')
 		.prependTo($row)
+		
+		// The move handle
+		.after($('<a class="move"></a>')
+			.addClass('button')
+			.hover(function() {
+				$(this).parent().addClass("hovered");
+			}, function() {
+				$(this).parent().removeClass("hovered");
+			})
+		)
+			
+		//Wrap them both
 		.wrap('<div class="inner"/>')
-		.hover(function () {
-			$(this).parentsUntil('.row').parent().toggleClass("hovered");
+		.hover(function() {
+			$(this).parentsUntil('.row').parent().addClass("hovered");
+		}, function() {
+			$(this).parentsUntil('.row').parent().removeClass("hovered");
 		})
 		.click(function(event) {
 			// Fade out, then remove
-			$rowElem = $(this).parentsUntil('.row').parent()
+			$(this).parentsUntil('.row').parent()
 					.fadeOut()
 					.queue(function() {
 						$(this).remove();
@@ -190,17 +214,17 @@ function dynRow($row) {
 		});
 		
 	// Add Field button
-		$addbutton = $('<a href="#" class="single add button fields"></a>')
+	$('<a href="#" class="single add button fields"></a>')
 		.insertBefore($row.children(':last-child'))
 		.wrap('<div class="inner"/>')
 		.click(function(event) {
 			addField($(event.target).parentsUntil('.row').parent()).fadeIn();
-			
+
 			// If the number of fields are [max], hide the button
 			if ($(this).parent().siblings('.field').length >= MAX_FIELDS) {
 				$(this).fadeOut();
 			}
-			
+
 			// Prevent default
 			event.preventDefault();
 			return false;
