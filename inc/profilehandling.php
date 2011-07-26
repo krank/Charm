@@ -105,7 +105,109 @@ function showprofile() {
 }
 
 function editprofile() {
+	// Check is user is logged in
+	if (isset($_SESSION['userid'])) {
+		$userid = $_SESSION['userid'];
+		$id = $_SESSION['userid'];
+		$tr = array();
+		$errors = array();
+		
+		// If it is, get its values
+		
+		$userdata = getuserbyid($id, "username, email, description");
+		$name = $userdata['username'];
+		$email = $userdata['email'];
+		$desc = $userdata['description'];
+		
+		$newname = false;
+		$newemail = false;
+		$newdesc = false;
+		
+		// See if username has been sent
+		if (isset($_POST['name'])) {
+			$newname = $_POST['name'];
+			
+			// If it has, check it
+			$currentname = getuserbyid($id, 'username');
+			if ($currentname != $newname) {
+				$errors["name"] = chkusername($newname);
+				
+				// If it checks out, insert it into the database
+				if (!$errors["name"])	$name = $newname;
+				else					$newname = false;
+			}
+		}
+		
+		// See is email adress has been sent
+		if (isset($_POST['email'])) {
+			$newemail = $_POST['email'];
+			
+			// If it checks out, insert it into the database
+			if (chkmail($newemail)) {
+				$email = $newemail;
+			} else {
+				$newemail = false;
+				$errors['mail'] = 'Du m&aring;ste skriva in en riktig E-mailadress.';
+			}
+		}
+		
+		// See if description has been sent
+		if (isset($_POST['desc'])) {
+			$newdesc = $_POST['desc'];
+			$desc = $newdesc;
+		}
+
+		
+		// If there are no errors & at least 1 of the above have been sent...
+		if ($newname || $newemail && count($errors) == 0) {
+			// Modify the user accordingly
+			modify_user($id,	$newname,
+								false,
+								$newemail,
+								$newdesc);
+		}
+		
+		
+		$errors = clean_array($errors, array("name", "email"));
 	
+		// Prepare lines-array
+		
+		$lines = array(
+			array(	"header"	=> "Anv&auml;ndarnamn", 
+					"input"		=> $name,
+					"maxlen"	=> 64,
+					"name"		=> 'name',
+					"error"		=> $errors["name"]
+			),
+			array(	"header"	=> "E-mailadress",
+					"input"		=> $email,
+					"maxlen"	=> 64,
+					"name"		=> 'email',
+					"error"		=> $errors["email"]
+			),
+			array(	"header"	=> "Beskrivning",
+					"textarea"	=> $desc,
+					"maxlen"	=> 1024,
+					"name"		=> 'desc'
+			)
+		);
+		
+		
+		// Insert lines
+		$tr['%lines%'] = makelines($lines);
+
+		// Return 
+		
+		$body = file_get_contents("template/profileedit_tpl.html");
+		$body = strtr($body,$tr);
+		return template($body);
+		
+	} else {
+		return template("Du &auml;r inte inloggad.");
+	}
+	
+	
+
 }
 
 ?>

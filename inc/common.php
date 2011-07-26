@@ -641,7 +641,16 @@ function makelines($lines) {
 			$out .= "\t<div class=\"formtext\">"
 						."<input type=\"$type\" name=\"$name\" value=\"$text\" maxlength=\"$maxlength\">"
 					."</div>\n";
+		} else if (isset($line['textarea'])) {
+			$text = $line['textarea'];
+			$maxlength = $line['maxlen'];
+			$name = $line['name'];
+			$out .= "\t<div class=\"formtext\">"
+						."<textarea name=\"$name\" maxlength=\"$maxlength\">$text</textarea>"
+					."</div>\n";
 		} else if (isset($line['text'])) {
+			$out .= "\t<div class=\"formtext\">".$line['text']."</div>\n";
+		} else if (isset($line['textbox'])) {
 			$out .= "\t<div class=\"formtext\">".$line['text']."</div>\n";
 		} 
 		

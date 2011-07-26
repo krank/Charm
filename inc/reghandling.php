@@ -1,7 +1,6 @@
 <?php
 
 include_once 'inc/userhandling.php';
-include_once 'inc/mailvalidate.php';
 
 
 function regform($errors = array()) {

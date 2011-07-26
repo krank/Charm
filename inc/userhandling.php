@@ -9,7 +9,7 @@ function insert_user($username, $password, $email, $id=False){
 	makequery("INSERT INTO users(username, password, email) VALUES ('$username', md5('$password'), '$email')");
 }
 
-function modify_user($id, $username=false, $password=false, $email=false, $public=false){
+function modify_user($id, $username=false, $password=false, $email=false, $desc=false, $public=false, $level=false, $picture=false){
 	// Modify a user in the database
 	
 	$values = array();
@@ -21,20 +21,21 @@ function modify_user($id, $username=false, $password=false, $email=false, $publi
 	}
 	if ($password) {
 		$password = md5($password);
-		$upd .= " password='$password'";
+		$upd .= ", password='$password'";
 	}
 	if ($email) {
-		$upd .= " email='$email'";
+		$upd .= ", email='$email'";
+	}
+	if ($desc) {
+		$upd .= ", description='$desc'";
 	}
 	if ($public) {
-		$upd .= " public='$public'";
+		$upd .= ", public='$public'";
 	}
 	
 	$query = "UPDATE users SET $upd WHERE id=$id";
 	
 	makequery($query);
-	
-	print $query;
 }
 
 function del_user($id) {
@@ -69,7 +70,11 @@ function getuserbyid($id, $field = "*") {
 	
 	if ($row) {
 		if ($field != "*") {
-			return $row[$field];
+			if (count($row) > 2) {
+				return $row;
+			} else {
+				return $row[$field];
+			}
 		} else {
 			return $row;
 		}
@@ -77,20 +82,6 @@ function getuserbyid($id, $field = "*") {
 		return false;
 	}
 }
-
-function getusernamebyid($id) {
-	$id = intval($id);
-	$result = makequery("SELECT username FROM users WHERE id=$id");
-	
-	$row = mysql_fetch_array($result);
-	
-	if ($row) {
-		return $row['username'];
-	} else {
-		return False;
-	}
-}
-
 
 function user_exists($username) {
 	// Check if user exists in the database
@@ -117,14 +108,14 @@ function chkusername($username) {
     // -- Check if username contains only alphanumeric
     if (!preg_match('/^\w+$/',$username)) {
     	return 'Anv&auml;ndarnamnet f&aring;r bara best&aring; av siffror, bokst&auml;ver och understreck.';
-    	
+
     // -- Check if username is between 3 and 64 characters in length
     } else if (!in_array(strlen($username), range(3,64))) {
     	return 'Anv&auml;ndarnamnet m&aring;ste vara mellan 3 och 64 tecken l&aring;ngt';
-    	
+
     // -- Check if username aleady exists in the database
     } else if (user_exists($username)) {
-    	return 'Anv&auml;ndarnamnet finns redan!'; 
+    	return 'Det finns redan en anv&auml;ndare med det namnet!';
     } else {
     	return False;
     }

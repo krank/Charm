@@ -17,7 +17,7 @@ function forgot() {
 			
 			$randompass = mysql_real_escape_string(makerandompass());
 			
-			modify_user($row['id'],false,$randompass);
+			modify_user($row['id'], $password=$randompass);
 			
 			// And then mail it to the adress
 			mail($mail, 'Ditt nya lösenord från rollperson.se', "Hej!\nDitt nya lösenord är ". $randompass, 'From: noreply@rollperson.se');

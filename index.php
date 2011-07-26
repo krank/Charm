@@ -47,6 +47,8 @@ if (isset($_GET['do'])) {
 		print delchar();
 	} else if ($_GET['do'] == 'showprofile') {
 		print showprofile();
+	} else if ($_GET['do'] == 'editprofile') {
+		print editprofile();
 	} else {
 		print template("<h2>Ok&auml;nt kommando</h2>");
 	}
