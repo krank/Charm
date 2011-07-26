@@ -656,4 +656,17 @@ function makelines($lines) {
 	return $out;
 }
 
+
+function makeform($title, $action, $lines, $submit) {
+	$out = "";
+	
+	$out .= "<h2>$title</h2>\n"
+				."<form action=\"$action\" method=\"post\">\n"
+				."".makelines($lines)."\n"
+				."<input type=\"submit\" value=\"$submit\" name=\"submit\">\n"
+				."</form>";
+	
+	return $out;
+}
+
 ?>
