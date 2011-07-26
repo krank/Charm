@@ -33,7 +33,7 @@ function editchar() {
 		if (isset($_POST['name'], $_POST['system'], $_POST['xml'], $_POST['public'], $_POST['charid'])) {
 
 			// Clean the POST
-			$datasource = getcleanpost(array('charid','name', 'system', 'desc', 'public', 'xml'));
+			$datasource = clean_array($_POST, array('charid','name', 'system', 'desc', 'public', 'xml'));
 
 			// Check the POST for errors
 			$maxlen = array(	"name" => 64,

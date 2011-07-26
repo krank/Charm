@@ -1,0 +1,15 @@
+<h2>Glömt lösenord</h2>
+
+<p>Skriv in den mailadress du registrerade dig med nedan, så genererar vi ett nytt lösenord och mailar det till dig.</p>
+
+<br />
+<br />
+<form action="./index.php?do=forgot" method="post">
+	<div class="formline">
+		<span class="formheader">E-mailadress</span><br />
+		<div class="formtext"><input type="text" name="mail"></div>
+		<div class="error">%forgot_err%</div>
+	</div>
+	
+	<input type="submit" value="Skicka" name="submit">
+</form>

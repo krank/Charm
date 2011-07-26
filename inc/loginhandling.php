@@ -30,6 +30,57 @@ function loginform($error = False) {
 }
 
 
+function forgot() {
+	
+	$tr = array("%forgot_err%" => "");
+	
+	if (isset($_POST['mail'])) {
+		// Check if mail is in database
+		$mail = mysql_real_escape_string($_POST['mail']);
+		
+		$query = "SELECT id FROM users WHERE email = '$mail'";
+		$result = makequery($query);
+		$row = mysql_fetch_array($result);
+		
+		if ($row) {
+			// If it is, generate new password randomly, and insert it
+			
+			$randompass = mysql_real_escape_string(makerandompass());
+			
+			modify_user($row['id'],false,$randompass);
+			
+			// And then mail it to the adress
+			mail($mail, 'Ditt nya lösenord från rollperson.se', "Hej!\nDitt nya lösenord är ". $randompass, 'From: noreply@rollperson.se');
+
+			
+		} else {
+			return template("<h2>Fel!</h2><p>Mailadressen $mail finns inte i vår databas!</p>");
+		}
+
+	}
+	
+	$body = file_get_contents('template/forgot_tpl.html');
+	$body = strtr($body,$tr);
+	return template($body);
+}
+
+
+
+function makerandompass() {
+    $password = "";
+    $loop = 0;
+    while ($loop < 12)
+    {
+        $randomchar = chr(mt_rand(35, 126));
+        if (!strstr($password, $randomchar))
+        {
+            $password .= $randomchar;
+            $loop++;
+        }
+    }
+    return $password;
+}
+
 function login() {
 	
 	if (isset($_POST['name']) && isset($_POST['pass'])) {

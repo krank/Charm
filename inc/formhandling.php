@@ -67,7 +67,7 @@ function editform() {
 		if (isset($_POST['name'], $_POST['system'], $_POST['xml'], $_POST['formid'], $_POST['public'])) {
 
 			// Clean the POST
-			$datasource = getcleanpost(array('formid','name', 'system', 'desc', 'public', 'xml'));
+			$datasource = clean_array($_POST, array('formid','name', 'system', 'desc', 'public', 'xml'));
 
 			// Check the POST for errors
 			$maxlen = array(	"name" => 64,

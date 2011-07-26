@@ -22,6 +22,9 @@ if (isset($_GET['do'])) {
 	} else if ($_GET['do'] == 'logout') {
 		print logout();
 		
+	} else if ($_GET['do'] == 'forgot') {
+		print forgot();
+		
 	} else if ($_GET['do'] == 'listforms') {
 		if (isset($_GET['userid'])) {
 			print formlist($_GET['userid']);

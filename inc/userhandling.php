@@ -6,11 +6,35 @@ include_once 'inc/db.php';
 
 function insert_user($username, $password, $email, $id=False){
 	// Insert a user into the database
-	mysql_query("INSERT INTO users(username, password, email) VALUES ('$username', md5('$password'), '$email')");
+	makequery("INSERT INTO users(username, password, email) VALUES ('$username', md5('$password'), '$email')");
 }
 
-function modify_user($id, $username="", $password="", $email="", $public){
+function modify_user($id, $username=false, $password=false, $email=false, $public=false){
 	// Modify a user in the database
+	
+	$values = array();
+	$cols = array();
+	$upd = "";
+	
+	if ($username) {
+		$upd .= " username='$username'";
+	}
+	if ($password) {
+		$password = md5($password);
+		$upd .= " password='$password'";
+	}
+	if ($email) {
+		$upd .= " email='$email'";
+	}
+	if ($public) {
+		$upd .= " public='$public'";
+	}
+	
+	$query = "UPDATE users SET $upd WHERE id=$id";
+	
+	makequery($query);
+	
+	print $query;
 }
 
 function del_user($id) {

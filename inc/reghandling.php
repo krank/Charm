@@ -8,6 +8,10 @@ function regform($errors = array()) {
 	// Display registration form, incl. template
 	$body = file_get_contents('template/register_tpl.html');
 
+
+	
+	
+	
 	
 	$tr = array(	'%name_err%' => '',
 					'%name_str%' => '', 
@@ -15,30 +19,55 @@ function regform($errors = array()) {
 					'%mail_str%' => '', 
 					'%pass_err%' => '');
 	
-	if (sizeof($errors) > 0) {
-		
-		if (isset($_POST['name'])) {
-			$tr['%name_str%'] = $_POST['name'];
-		}
-		
-		if (isset($_POST['mail'])) {
-			$tr['%mail_str%'] = $_POST['mail'];
-		}
-		
-		if (isset($errors['name'])) {
-			$tr['%name_err%'] = $errors['name'];
-		}
 	
-		if (isset($errors['mail'])) {
-			$tr['%mail_err%'] = $errors['mail'];
-		}
+	
+	
+	
+	if (sizeof($errors) > 0) {
+		$post = clean_array($_POST, array('name','mail'));
+		$errors = clean_array($errors, array("name","mail","pass"));
 		
-		if (isset($errors['pass'])) {
-			$tr['%pass_err%'] = $errors['pass']; 
-		}
+		$tr['%name_str%'] = $_POST['name'];
+		$tr['%mail_str%'] = $_POST['mail'];
+		
+		$tr['%name_err%'] = $errors['name'];
+		$tr['%mail_err%'] = $errors['mail'];
+		$tr['%pass_err%'] = $errors['pass']; 
+
 	}
 	
 	
+	
+	$lines = array(
+		array(	"header"	=> "Anv&auml;ndarnamn", 
+				"input"		=> $tr['%name_str%'],
+				"maxlen"	=> 64,
+				"name"		=> 'name',
+				"error"		=> $tr['%name_err%']
+		),
+		array(	"header"	=> "E-mailadress",
+				"input"		=> $tr['%mail_str%'],
+				"maxlen"	=> 64,
+				"name"		=> 'mail',
+				"error"		=> $tr['%mail_err%']
+		),
+		array(	"header"	=> "L&ouml;senord",
+				"input"		=> "",
+				"maxlen"	=> 64,
+				"name"		=> "pass",
+				"type"		=> "password"
+		),
+		array(	"header"	=> "Upprepa l&ouml;senord",
+				"input"		=> "",
+				"maxlen"	=> 64,
+				"name"		=> "pass2",
+				"error"		=> $tr['%pass_err%'],
+				"type"		=> "password"
+		)
+		
+	);
+	
+	$tr['%lines%'] = makelines($lines);
 
 	
 	
@@ -57,11 +86,7 @@ function register() {
 		
 		$result = array();
 	
-		$user = $_POST;
-		// Skapa en pålitlig användar-array
-	    foreach(array("name", "pass", "pass2", "mail") as $s) {
-	        if (!isset($user[$s])) $user[$s] = "";
-	    }
+		$user = clean_array($_POST, array("name", "pass", "pass2", "mail"));
 	
 	    // Check the username
 	    

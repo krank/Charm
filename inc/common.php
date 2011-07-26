@@ -1,15 +1,15 @@
 <?php
 
-function getcleanpost($items) {
+function clean_array($source, $items) {
 	
 	$safeitems = array();
 	
 	// Clean the POST values
 	foreach ($items as $item) {
 		// If the item has been set in $_POST
-		if (isset($_POST[$item])) {
+		if (isset($source[$item])) {
 			// Insert it into the safe array
-			$safeitems[$item] = $_POST[$item];
+			$safeitems[$item] = $source[$item];
 		} else {
 			$safeitems[$item] = "";
 		}
@@ -614,6 +614,46 @@ function template($content="") {
 	
 	return $output;
 	
+}
+
+
+function makelines($lines) {
+	$out = "";
+	
+	foreach ($lines as $line) {
+		$out .= "\n<div class=\"formline\">\n";
+		
+		
+		if (isset($line['header'])) {
+			$out .= "\t<span class=\"formheader\">".$line['header']."</span><br />\n";
+		}
+		
+		if (isset($line['input'])) {
+			$text = $line['input'];
+			$maxlength = $line['maxlen'];
+			$name = $line['name'];
+			if (isset($line['type'])) {
+				$type = $line['type'];
+			} else {
+				$type = "text";
+			}
+			
+			$out .= "\t<div class=\"formtext\">"
+						."<input type=\"$type\" name=\"$name\" value=\"$text\" maxlength=\"$maxlength\">"
+					."</div>\n";
+		} else if (isset($line['text'])) {
+			$out .= "\t<div class=\"formtext\">".$line['text']."</div>\n";
+		} 
+		
+		if (isset($line['error'])) {
+			$out .= "\t<div class=\"error\">".$line['error']."</div>\n";
+		}
+		
+		$out .= "</div>\n";
+	}
+	
+	
+	return $out;
 }
 
 ?>
