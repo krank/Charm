@@ -36,11 +36,10 @@ function regform($errors = array()) {
 	);
 
 
-	$form = makeform("Registrera dig", "./index.php?do=register", $lines, "Registrera!");
+	$form = makeform("Registrera dig", "?do=register", $lines, "Registrera!");
 
 	return $form;
 }
-
 
 function register() {
 	

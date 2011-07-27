@@ -2,7 +2,8 @@
 
 function forgot() {
 	
-	$tr = array("%forgot_err%" => "");
+	$error = "";
+	$message = false;
 	
 	if (isset($_POST['mail'])) {
 		// Check if mail is in database
@@ -17,24 +18,31 @@ function forgot() {
 			
 			$randompass = mysql_real_escape_string(makerandompass());
 			
-			modify_user($row['id'], $password=$randompass);
+			modify_user($row['id'], false, $randompass);
 			
 			// And then mail it to the adress
-			mail($mail, 'Ditt nya lösenord från rollperson.se', "Hej!\nDitt nya lösenord är ". $randompass, 'From: noreply@rollperson.se');
+			mail($mail, 'Ditt nya l&ouml;senord från rollperson.se', "Hej!\nDitt nya lösenord är ". $randompass, 'From: noreply@rollperson.se');
 
+			$message = "Ditt nya l&ouml;senord har skickats! Om du inte f&aring;r det, kolla bland skr&auml;pposten.";
 			
 		} else {
-			return template("<h2>Fel!</h2><p>Mailadressen $mail finns inte i vår databas!</p>");
+			$error = "Mailadressen $mail finns inte i v&aring;r databas!";
 		}
 
 	}
 	
-	$body = file_get_contents('template/forgot_tpl.html');
-	$body = strtr($body,$tr);
-	return template($body);
+	$lines = array(
+		array(	"header"	=> "E-mailadress", 
+				"input"		=> "",
+				"maxlen"	=> 1024,
+				"name"		=> 'mail',
+				"error"		=> $error
+		)
+	);
+	
+	$form = makeform("Gl&ouml;mt l&ouml;senordet", "?do=forgot", $lines, "Skicka", $message, "Skriv in den mailadress du registrerade dig med nedan, så genererar vi ett nytt lösenord och mailar det till dig.");
+	return template($form);
 }
-
-
 
 function makerandompass() {
     $password = "";
@@ -94,11 +102,14 @@ function login() {
 				"name"		=> "pass",
 				"type"		=> "password",
 				"error"		=> $error
+		),
+		array(	
+				"text"		=> "<a href=\"?do=forgot\">Gl&ouml;mt l&ouml;senordet?</a>"
 		)
 	);
 	
 	// Create the form, and return it.
-	$form = makeform("Logga in", "./index.php?do=login", $lines, "Logga in");
+	$form = makeform("Logga in", "?do=login", $lines, "Logga in");
 	return template($form);
 }
 

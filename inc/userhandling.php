@@ -14,27 +14,26 @@ function modify_user($id, $username=false, $password=false, $email=false, $desc=
 	
 	$values = array();
 	$cols = array();
-	$upd = "";
+	$upd = array();
 	
-	if ($username) {
-		$upd .= " username='$username'";
-	}
-	if ($password) {
-		$password = md5($password);
-		$upd .= ", password='$password'";
-	}
-	if ($email) {
-		$upd .= ", email='$email'";
-	}
-	if ($desc) {
-		$upd .= ", description='$desc'";
-	}
-	if ($public) {
-		$upd .= ", public='$public'";
+	if ($password) $password = md5($password);
+	
+	foreach (array(	'username'	=> $username,
+					'password'	=> $password,
+					'email'		=> $email,
+					'description' => $desc,
+					'public'	=> $public
+					) as $field => $value) {
+		
+		if ($value) {
+			$upd[] = $field ."='$value'";
+		}
 	}
 	
-	$query = "UPDATE users SET $upd WHERE id=$id";
+	$l = implode(',', $upd);
 	
+	$query = "UPDATE users SET $l WHERE id=$id";
+
 	makequery($query);
 }
 

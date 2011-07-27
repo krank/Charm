@@ -12,43 +12,30 @@ include_once 'inc/profilehandling.php';
 
 session_start();
 
+$action = array(
+	'register' => 'register',
+	'login' => 'login',
+	'logout' => 'logout',
+	'forgot' => 'forgot',
+	
+	'listforms' => 'listforms',
+	'editform' => 'editform',
+	'showform' => 'showform',
+	'delform' => 'delform',
+	
+	'editchar' => 'editchar',
+	'showchar' => 'showchar',
+	'listchars' => 'listchars',
+	'delchar' => 'delchar',
+	
+	'showprofile' => 'showprofile',
+	'editprofile' => 'editprofile',
+	'changepass' => 'changepass'
+);
+
 if (isset($_GET['do'])) {
-	if ($_GET['do'] == 'register') {
-		print register();
-		
-	} else if ($_GET['do'] == 'login') {
-		print login();
-		
-	} else if ($_GET['do'] == 'logout') {
-		print logout();
-		
-	} else if ($_GET['do'] == 'forgot') {
-		print forgot();
-		
-	} else if ($_GET['do'] == 'listforms') {
-		if (isset($_GET['userid'])) {
-			print formlist($_GET['userid']);
-		} else {
-			print formlist();
-		}
-	} else if ($_GET['do'] == 'editform') {
-		print editform();
-	} else if ($_GET['do'] == 'showform') {
-		print showform();
-	} else if ($_GET['do'] == 'delform') {
-		print delform();
-	} else if ($_GET['do'] == 'editchar') {
-		print editchar();
-	} else if ($_GET['do'] == 'showchar') {
-		print showchar();
-	} else if ($_GET['do'] == 'listchars') {
-		print listchar();
-	} else if ($_GET['do'] == 'delchar') {
-		print delchar();
-	} else if ($_GET['do'] == 'showprofile') {
-		print showprofile();
-	} else if ($_GET['do'] == 'editprofile') {
-		print editprofile();
+	if (array_key_exists($_GET['do'], $action)) {
+		print call_user_func($action[$_GET['do']]);
 	} else {
 		print template("<h2>Ok&auml;nt kommando</h2>");
 	}

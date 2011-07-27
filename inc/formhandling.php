@@ -7,9 +7,9 @@ include_once 'inc/settings.php';
 include_once 'inc/db.php';
 include_once 'inc/common.php';
 
-function formlist($user_id=False) {
+function listforms() {
 	if (isset($_GET['userid'])) {
-		return datalist('forms', 'Rollformul&auml;r', 'form', array('./index.php?do=editform','Nytt rollformulär'), $_GET['userid']);
+		return datalist('forms', 'Rollformul&auml;r', 'form', array('?do=editform','Nytt rollformulär'), $_GET['userid']);
 	} else {
 		return datalist('forms', 'Rollformul&auml;r', 'form');
 	}
@@ -31,9 +31,9 @@ function showform() {
 	if (isset($_GET['formid'])) {
 		$formid = $_GET['formid'];
 		return showdata('forms', 'Visa rollformulär', $formid, 
-				array("./index.php?do=editform&formid=$formid&makecopy","Kopiera"),
-				array("./index.php?do=editform&formid=$formid","Redigera"),
-				array("./index.php?do=editchar&formid=$formid","Skapa rollperson")
+				array("?do=editform&formid=$formid&makecopy","Kopiera"),
+				array("?do=editform&formid=$formid","Redigera"),
+				array("?do=editchar&formid=$formid","Skapa rollperson")
 				);
 	} else {
 		return template("Ingen rollperson angiven.");

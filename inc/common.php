@@ -401,7 +401,7 @@ function makepager($type, $douser, $currentoffset, $maxitems, $num_items) {
 	$pager = "";
 	
 	// The "back" arrow
-	$pager .= "<a href=\"./index.php?do=list$type"."s$douser&offset=".max(0,($currentoffset-$maxitems))."\">&lt;&lt;</a>";
+	$pager .= "<a href=\"?do=list$type"."s$douser&offset=".max(0,($currentoffset-$maxitems))."\">&lt;&lt;</a>";
 	
 	// Calculate the current page
 	$currentpage = ($currentoffset / $maxitems)+1;
@@ -416,7 +416,7 @@ function makepager($type, $douser, $currentoffset, $maxitems, $num_items) {
 		// show a link
 		} else if ($p > $currentpage-$pagerspan && $p < $currentpage+$pagerspan) {
 			$o = ($p-1)*$maxitems;
-			$pager .= "<a href=\"./index.php?do=list$type"."s$douser&offset=$o\">$p</a>";
+			$pager .= "<a href=\"?do=list$type"."s$douser&offset=$o\">$p</a>";
 			
 		// if it's any of the two pages signaling the end of the pager's span, display ellipsis
 		} else if ($p == $currentpage+$pagerspan || $p == $currentpage-$pagerspan) {
@@ -425,7 +425,7 @@ function makepager($type, $douser, $currentoffset, $maxitems, $num_items) {
 	}
 	
 	// The "Next" arrow
-	$pager .="<a href=\"./index.php?do=list$type"."s$douser&offset=".max(0,($currentoffset+$maxitems))."\">&gt;&gt;</a>";
+	$pager .="<a href=\"?do=list$type"."s$douser&offset=".max(0,($currentoffset+$maxitems))."\">&gt;&gt;</a>";
 	
 	return $pager;
 }
@@ -452,7 +452,7 @@ function makerows($result, $type, $userid, $loggedinuser) {
 		$id = $row['id'];
 		
 		// Create the name cell
-		$rows .= "\t<td><a href=\"./index.php?do=show$type&$type"."id=$id\">$name</td>\n";
+		$rows .= "\t<td><a href=\"?do=show$type&$type"."id=$id\">$name</td>\n";
 		
 		// Create the system cell
 		$rows .= "\t<td>".$row['system']."</td>\n";
@@ -472,7 +472,7 @@ function makerows($result, $type, $userid, $loggedinuser) {
 			if ($_SESSION['userid'] == $userid) {
 				
 				// Show a Delete button
-				$rows .= "\t<td><a class=\"single button del\" href=\"./index.php?do=del$type&$type"."id=$id\"></a></td>\n";
+				$rows .= "\t<td><a class=\"single button del\" href=\"?do=del$type&$type"."id=$id\"></a></td>\n";
 			}
 		}
 		
@@ -516,8 +516,8 @@ function deldata($source, $type, $id, $confirmationtext, $sorrytext) {
 			$body = messagebox(array(
 				"header"		=> "&Auml;r du s&auml;ker?",
 				"content"		=> $confirmationtext,
-				"leftbutton"	=> "<a class=\"button cross\" href=\"./index.php?do=list$type"."s&userid=$ownerid\">Nej</a>",
-				"rightbutton"	=> "<a class=\"button check\" href=\"./index.php?do=del$type&confirmed&$type"."id=$id\">Ja</a>"
+				"leftbutton"	=> "<a class=\"button cross\" href=\"?do=list$type"."s&userid=$ownerid\">Nej</a>",
+				"rightbutton"	=> "<a class=\"button check\" href=\"?do=del$type&confirmed&$type"."id=$id\">Ja</a>"
 			));
 		}
 
@@ -527,7 +527,7 @@ function deldata($source, $type, $id, $confirmationtext, $sorrytext) {
 			"header"		=> "&Auml;r du s&auml;ker?",
 			"content"		=> $sorrytext,
 			"leftbutton"	=> "",
-			"rightbutton"	=> "<a class=\"button cross\" href=\"./index.php?do=list$type"."s&userid=$ownerid\">Nej</a>"
+			"rightbutton"	=> "<a class=\"button cross\" href=\"?do=list$type"."s&userid=$ownerid\">Nej</a>"
 		));
 	}
 
@@ -557,7 +557,7 @@ function makemenu($list) {
 	
 	foreach ($list as $key => $value) {
 		if ($value != '') {
-			$mnu .= "\t<li><a href=\"./index.php?do=$value\">$key</a></li>\n";
+			$mnu .= "\t<li><a href=\"?do=$value\">$key</a></li>\n";
 		} else {
 			$mnu .= "</ul><hr><ul class=\"menu\">";
 		}
@@ -650,9 +650,7 @@ function makelines($lines) {
 					."</div>\n";
 		} else if (isset($line['text'])) {
 			$out .= "\t<div class=\"formtext\">".$line['text']."</div>\n";
-		} else if (isset($line['textbox'])) {
-			$out .= "\t<div class=\"formtext\">".$line['text']."</div>\n";
-		} 
+		}
 		
 		if (isset($line['error'])) {
 			$out .= "\t<div class=\"error\">".$line['error']."</div>\n";
@@ -666,14 +664,18 @@ function makelines($lines) {
 }
 
 
-function makeform($title, $action, $lines, $submit) {
-	$out = "";
+function makeform($title, $action, $lines, $submit, $message=false, $instructions=false) {
+	$out = "<h2>$title</h2>\n";
 	
-	$out .= "<h2>$title</h2>\n"
-				."<form action=\"$action\" method=\"post\">\n"
-				."".makelines($lines)."\n"
-				."<input type=\"submit\" value=\"$submit\" name=\"submit\">\n"
-				."</form>";
+	// If a message has been sent, insert it
+	if ($message) $out .= "<div id=\"message\">$message</div>\n";
+	
+	if ($instructions) $out .= "<p>$instructions</p>";
+	
+	$out .= "<form action=\"$action\" method=\"post\">\n"
+				."\t".makelines($lines)."\n"
+				."\t<input type=\"submit\" value=\"$submit\" name=\"submit\">\n"
+			."</form>";
 	
 	return $out;
 }

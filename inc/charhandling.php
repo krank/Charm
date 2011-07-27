@@ -154,15 +154,15 @@ function showchar() {
 	if (isset($_GET['charid'])) {
 		$charid = $_GET['charid'];
 		return showdata('characters', 'Visa rollperson', $charid, 
-				array("./index.php?do=editchar&charid=$charid&makecopy","Kopiera"),
-				array("./index.php?do=editchar&charid=$charid","Redigera")
+				array("?do=editchar&charid=$charid&makecopy","Kopiera"),
+				array("?do=editchar&charid=$charid","Redigera")
 				);
 	} else {
 		return template("Ingen rollperson angiven.");
 	}
 }
 
-function listchar() {
+function listchars() {
 	if (isset($_GET['userid'])) {
 		return datalist('characters', 'Rollpersoner', 'char', '', $_GET['userid']);
 	} else {

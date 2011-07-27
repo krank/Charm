@@ -18,7 +18,18 @@ function showprofile() {
 	} elseif (isset($_SESSION['userid'])) {
 		$userid = $_SESSION['userid'];
 		$checkpublic = false;
+	} else {
+		$userid = false;
 	}
+
+	if ($userid == $_SESSION['userid']) {
+		$tr['%toptools%'] =	 "\n<a href=\"?do=changepass\" class=\"edit button\">&Auml;ndra l&ouml;senord</a>"
+							."\n<a href=\"?do=editprofile\" class=\"edit button\">Redigera profil</a>";
+	}
+	
+	
+	
+	
 	
 	// Get the user
 	$user = getuserbyid($userid);
@@ -78,7 +89,7 @@ function showprofile() {
 						$tr[$repl] .= "\t<tr class=\"even\">\n";
 					}
 					
-					$tr[$repl] .= "\t\t<td><a href=\"./index.php?do=show$word&$word"."id=$id\">$name</a></td><td>$system</td>";
+					$tr[$repl] .= "\t\t<td><a href=\"?do=show$word&$word"."id=$id\">$name</a></td><td>$system</td>";
 					
 					$tr[$repl] .= "\t</tr>\n";
 					
@@ -109,7 +120,7 @@ function editprofile() {
 	if (isset($_SESSION['userid'])) {
 		$userid = $_SESSION['userid'];
 		$id = $_SESSION['userid'];
-		$tr = array();
+		$tr = array("%message%" => '');
 		$errors = array();
 		
 		// If it is, get its values
@@ -165,8 +176,8 @@ function editprofile() {
 								false,
 								$newemail,
 								$newdesc);
-		}
-		
+			$tr['%message%'] = "Profilen uppdaterades utan problem";
+		}		
 		
 		$errors = clean_array($errors, array("name", "email"));
 	
@@ -193,6 +204,14 @@ function editprofile() {
 		);
 		
 		
+		if ($tr['%message%'] == "") {
+			$tr['%msgdisplay%'] = 'none';
+		} else {
+			$tr['%msgdisplay%'] = 'block';
+		}
+		
+		
+		
 		// Insert lines
 		$tr['%lines%'] = makelines($lines);
 
@@ -208,6 +227,71 @@ function editprofile() {
 	
 	
 
+}
+
+function changepass() {
+	
+	if (isset($_SESSION['userid'])) {
+	
+		$errors = array();
+		$message = "";
+
+		if (isset($_POST['oldpass'], $_POST['pass'], $_POST['pass2'])) {
+			// get old password
+			$oldpass = getuserbyid($_SESSION['userid'], 'password');
+
+			// If they don't match, throw an error
+			if ($oldpass != md5($_POST['oldpass'])) {
+				$errors['oldpass'] = "Felaktigt l&ouml;senord";
+			}
+
+			// If the new passwords aren't OK, throw an error
+			$matcherr = chkpass($_POST['pass'], $_POST['pass2']);
+			if ($matcherr) {
+				$errors['pass'] = $matcherr;
+			}
+
+			// If there are no errors at this point, change the password
+			if (count($errors) == 0) {
+				$message = "L&ouml;senordet &auml;ndrades.";
+				
+				modify_user($_SESSION['userid'], false,$_POST['pass']);
+				
+			} else {
+				$message = "L&ouml;senordet &auml;ndrades inte.";
+			}
+
+		}
+
+		$errors = clean_array($errors, array('oldpass', 'pass'));
+
+		$lines = array(
+			array(	"header"	=> "Ditt nuvarande l&ouml;senord", 
+					"input"		=> "",
+					"maxlen"	=> 64,
+					"name"		=> 'oldpass',
+					"type"		=> "password",
+					"error"		=> $errors['oldpass']
+			),
+			array(	"header"	=> "Ditt nya l&ouml;senord",
+					"input"		=> "",
+					"maxlen"	=> 64,
+					"name"		=> "pass",
+					"type"		=> "password"
+			),
+			array(	"header"	=> "Upprepa ditt nya l&ouml;senord",
+					"input"		=> "",
+					"maxlen"	=> 64,
+					"name"		=> "pass2",
+					"type"		=> "password",
+					"error"		=> $errors['pass']
+			)
+		);
+
+		$form = makeform("&Auml;ndra l&ouml;senord", "?do=changepass", $lines, "&Auml;ndra", $message);
+
+		return template($form);
+	}
 }
 
 ?>
