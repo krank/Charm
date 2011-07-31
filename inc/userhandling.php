@@ -22,7 +22,8 @@ function modify_user($id, $username=false, $password=false, $email=false, $desc=
 					'password'	=> $password,
 					'email'		=> $email,
 					'description' => $desc,
-					'public'	=> $public
+					'public'	=> $public,
+					'picture'	=> $picture
 					) as $field => $value) {
 		
 		if ($value) {
@@ -180,6 +181,18 @@ function chkmail($email) {
 		}
 	}
 	return $isValid;
+}
+
+
+
+function clean_profile_image($image) {
+	// Check if $image exists
+	
+	if (file_exists($image)) {
+		return $image;
+	} else {
+		return './images/emptyprofile.png';
+	}
 }
 
 ?>

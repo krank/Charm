@@ -12,30 +12,30 @@ include_once 'inc/profilehandling.php';
 
 session_start();
 
-$action = array(
-	'register' => 'register',
-	'login' => 'login',
-	'logout' => 'logout',
-	'forgot' => 'forgot',
+$action = array(	'register',
+					'login',
+					'logout',
+					'forgot',
 	
-	'listforms' => 'listforms',
-	'editform' => 'editform',
-	'showform' => 'showform',
-	'delform' => 'delform',
+					'listforms',
+					'editform',
+					'showform',
+					'delform',
 	
-	'editchar' => 'editchar',
-	'showchar' => 'showchar',
-	'listchars' => 'listchars',
-	'delchar' => 'delchar',
+					'editchar',
+					'showchar',
+					'listchars',
+					'delchar',
 	
-	'showprofile' => 'showprofile',
-	'editprofile' => 'editprofile',
-	'changepass' => 'changepass'
-);
+					'showprofile',
+					'editprofile',
+					'changepass',
+					'changepic'
+					);
 
 if (isset($_GET['do'])) {
-	if (array_key_exists($_GET['do'], $action)) {
-		print call_user_func($action[$_GET['do']]);
+	if (in_array($_GET['do'], $action)) {
+		print call_user_func($_GET['do']);
 	} else {
 		print template("<h2>Ok&auml;nt kommando</h2>");
 	}

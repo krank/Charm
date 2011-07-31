@@ -672,7 +672,7 @@ function makeform($title, $action, $lines, $submit, $message=false, $instruction
 	
 	if ($instructions) $out .= "<p>$instructions</p>";
 	
-	$out .= "<form action=\"$action\" method=\"post\">\n"
+	$out .= "<form action=\"$action\" method=\"post\" enctype=\"multipart/form-data\">\n"
 				."\t".makelines($lines)."\n"
 				."\t<input type=\"submit\" value=\"$submit\" name=\"submit\">\n"
 			."</form>";
