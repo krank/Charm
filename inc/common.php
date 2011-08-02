@@ -367,7 +367,9 @@ function datalist($source, $title, $type, $newurl=False, $userid=False) {
 					$source.system, 
 					$source.description, 
 					$source.changed, 
-					users.username AS owner 
+					users.id AS userid,
+					users.username AS owner,
+					users.public AS public
 				FROM $source,users 
 				WHERE $source.public=1 AND $source.ownerid = users.id 
 				ORDER BY changed DESC LIMIT $offset,$maxitems";
@@ -469,7 +471,18 @@ function makerows($result, $type, $userid, $loggedinuser) {
 		// If user hasn't been specified...
 		if (!$userid) {
 			// Create the owner username cell
-			$rows .= "\t<td>".$row['owner']."</td>\n";
+			
+			
+			
+			if ($row['public'] == 1) {
+				$rows .= "\t<td><a href=\"?do=showprofile&id={$row['userid']}\">{$row['owner']}</a></td>\n";
+			} else {
+				$rows .= "\t<td>".$row['owner']."</td>\n";
+			}
+			
+			
+			
+			// Begin the tools cell
 			$rows .= "\t<td>";
 			
 		// Otherwise, if userid is specified and a user is logged in...
