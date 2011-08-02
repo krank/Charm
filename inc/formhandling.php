@@ -26,10 +26,13 @@ function delform() {
 	}	
 }
 
-function showform() {
+function showform($formid=false) {
 	
 	if (isset($_GET['formid'])) {
 		$formid = $_GET['formid'];
+	}
+	
+	if ($formid) {
 		return showdata('forms', 'Visa rollformulär', $formid, 
 				array("?do=editform&formid=$formid&makecopy","Kopiera"),
 				array("?do=editform&formid=$formid","Redigera"),

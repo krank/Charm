@@ -40,7 +40,21 @@ if (isset($_GET['do'])) {
 		print template("<h2>Ok&auml;nt kommando</h2>");
 	}
 } else {
-	print template();
+	
+	// Get first key of the $_GET
+	$first = each($_GET);
+	
+	// If it's an integer, show it as a character
+	if (is_numeric($first[0])) {
+		print showchar($first[0]);
+		
+	// if it's the letter f and its value is an integer, show it as a form
+	} else if ($first[0] == 'f' && is_numeric($first[1])) {
+		print showform($first[1]);
+		
+	} else {
+		print template();
+	}
 }
 
 ?>

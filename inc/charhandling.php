@@ -157,9 +157,14 @@ function editchar() {
 	
 }
 
-function showchar() {
+function showchar($charid = false) {
+	
+	
 	if (isset($_GET['charid'])) {
 		$charid = $_GET['charid'];
+	}
+	
+	if ($charid) {
 		return showdata('characters', 'Visa rollperson', $charid, 
 				array("?do=editchar&charid=$charid&makecopy","Kopiera"),
 				array("?do=editchar&charid=$charid","Redigera")
