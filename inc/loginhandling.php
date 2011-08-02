@@ -76,6 +76,7 @@ function login() {
 			// Set session variables
 			$_SESSION['username'] = $userdata['username'];
 			$_SESSION['userid'] = $userdata['id'];
+			$_SESSION['level'] = $userdata['level'];
 			
 			// Return login confirmation
 			return template("Du &auml;r nu inloggad.");

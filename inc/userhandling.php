@@ -52,7 +52,7 @@ function get_user($username, $password) {
 	$password = md5($password);
 	
 	// Get results
-	$result = makequery("SELECT id, username FROM users WHERE username='$username' AND password='$password'");
+	$result = makequery("SELECT id, username, level FROM users WHERE username='$username' AND password='$password'");
 	
 	$row = mysql_fetch_array($result);
 	

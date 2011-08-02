@@ -614,33 +614,39 @@ function template($content="") {
 
 	
 	
-	$menu = "";
+	$menu = array(	'Alla rollpersoner' => 'listchars',
+					'Alla rollformul&auml;r' => 'listforms',
+					'cmd1' => '');
 	
 	// Check if a user is logged in
 	if (isset($_SESSION['userid'])) {
-		$menu = array(	'Alla rollpersoner' => 'listchars',
-						'Alla rollformul&auml;r' => 'listforms',
-						'cmd1' => '',
+		$menu = array_merge($menu, array(
 						'Dina rollpersoner' => 'listchars&userid='.$_SESSION['userid'],
 						'Dina rollformul&auml;r' => 'listforms&userid='.$_SESSION['userid'],
 						'Din profil' => 'showprofile',
 						'Logga ut' => 'logout'
-					);
-
-		$tr['%menu%'] = makemenu($menu);
+					));
 		$tr['%loggedinstr%'] = "Inloggad som " . $_SESSION['username'];
+		
+		
+		if ($_SESSION['level'] == 1) {
+			$menu = array_merge($menu, array(
+						'cmd2' => '',
+						'Skriv nyhet' => 'newarticle'
+					));
+		}
 
 	} else {
-		$menu = array(	'Alla rollpersoner' => 'listchars',
+		$menu = array_merge($menu,array(	'Alla rollpersoner' => 'listchars',
 						'Alla rollformul&auml;r' => 'listforms',
 						'cmd1' => '',
 						'Logga in' => 'login',
 						'Registrera dig' => 'register'
-					);
-
-		$tr['%menu%'] = makemenu($menu);
+					));
 		$tr['%loggedinstr%'] = "Inte inloggad";
 	}
+	
+	$tr['%menu%'] = makemenu($menu);
 	
 	$output = strtr($base, $tr);
 	
