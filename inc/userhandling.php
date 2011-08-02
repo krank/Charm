@@ -12,6 +12,8 @@ function insert_user($username, $password, $email, $id=False){
 function modify_user($id, $username=false, $password=false, $email=false, $desc=false, $public=false, $level=false, $picture=false){
 	// Modify a user in the database
 	
+	
+	
 	$values = array();
 	$cols = array();
 	$upd = array();
@@ -26,7 +28,7 @@ function modify_user($id, $username=false, $password=false, $email=false, $desc=
 					'picture'	=> $picture
 					) as $field => $value) {
 		
-		if ($value) {
+		if ($value !== false) {
 			$upd[] = $field ."='$value'";
 		}
 	}

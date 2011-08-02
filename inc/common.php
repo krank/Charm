@@ -669,6 +669,22 @@ function makelines($lines) {
 					."</div>\n";
 		} else if (isset($line['text'])) {
 			$out .= "\t<div class=\"formtext\">".$line['text']."</div>\n";
+		} else if (isset($line['checked'])) {
+			$name = $line['name'];
+			$selected = $line['selected'];
+			$values = $line['values'];
+			
+			$i = 0;
+			foreach ($line['options'] as $text) {
+				if ($i == $selected) {
+					$checked = "checked";
+				} else {
+					$checked = "";
+				}
+				
+				$out .= "<input type=\"radio\" name=\"$name\" value=\"{$values[$i]}\" $checked />$text";
+				$i++;
+			}
 		}
 		
 		if (isset($line['error'])) {

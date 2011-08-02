@@ -18,6 +18,7 @@ function showprofile() {
 		
 		// If the id belongs to the logged-in user
 		if ($userid == $_SESSION['userid']) {
+			// Display various user-centric stuff
 			$tr['%toptools%'] =	 "\n<a href=\"?do=changepass\" class=\"edit button\">&Auml;ndra l&ouml;senord</a>"
 								."\n<a href=\"?do=editprofile\" class=\"edit button\">Redigera profil</a>"
 								."\n<a href=\"?do=changepic\" class=\"edit button\">&Auml;ndra profilbild</a>";
@@ -26,6 +27,7 @@ function showprofile() {
 	} else {
 		$userid = false;
 	}
+	
 	// Get the user
 	$user = getuserbyid($userid);
 		
@@ -108,89 +110,96 @@ function make_datastream($source, $userid, $word, $nonpublic) {
 function editprofile() {
 	// Check is user is logged in
 	if (isset($_SESSION['userid'])) {
-		$userid = $_SESSION['userid'];
 		$id = $_SESSION['userid'];
 		$errors = array();
 		$message = false;
 		
 		// If it is, get its values
 		
-		$userdata = getuserbyid($id, "username, email, description");
-		$name = $userdata['username'];
+		$userdata = getuserbyid($id, "username, email, description, public");
+		$username = $userdata['username'];
 		$email = $userdata['email'];
 		$desc = $userdata['description'];
+		$public = $userdata['public'];
 		
 		$newname = false;
 		$newemail = false;
 		$newdesc = false;
 		
-		// See if username has been sent
-		if (isset($_POST['name'])) {
-			$newname = $_POST['name'];
-			
-			// If it has, check it
-			$currentname = getuserbyid($id, 'username');
-			if ($currentname != $newname) {
-				$errors["name"] = chkusername($newname);
-				
-				// If it checks out, insert it into the database
-				if (!$errors["name"])	$name = $newname;
-				else					$newname = false;
-			}
-		}
-		
-		// See is email adress has been sent
-		if (isset($_POST['email'])) {
-			$newemail = $_POST['email'];
-			
-			// If it checks out, insert it into the database
-			if (chkmail($newemail)) {
-				$email = $newemail;
-			} else {
-				$newemail = false;
-				$errors['mail'] = 'Du m&aring;ste skriva in en riktig E-mailadress.';
-			}
-		}
-		
 		// See if description has been sent
-		if (isset($_POST['desc'])) {
-			$newdesc = $_POST['desc'];
-			$desc = $newdesc;
+
+		
+		// See if stuff has been sent
+		if (isset($_POST['username'], $_POST['email'], $_POST['desc'], $_POST['public'])) {
+			
+			// Check the new name
+			$errors["username"] = chkusername($_POST['username']);
+			if (!$errors["username"] || $username == $_POST['username']) {
+				$username = $_POST['username'];
+				unset ($errors["username"]);
+			}
+
+			
+			// Check the new mail
+			if (chkmail($_POST['email'])) $email = $_POST['email'];
+			else $errors['mail'] = 'Du m&aring;ste skriva in en riktig E-mailadress.';
+			
+			// Check the new description
+			if (sizeof($_POST['desc']) <= 128) {
+				$desc = $_POST['desc'];
+			} else $errors['desc'] = 'Du f&aring;r max anv&auml;nda 128 tecken!';
+			
+			if ($_POST['public'] == 0 || $_POST['public'] == 1) {
+				$public = $_POST['public'];
+			}
+			
+			// If there are no errors
+			if (count($errors) == 0) {
+
+				// Modify the user accordingly
+				modify_user($id,	$username,
+									false,
+									$email,
+									$desc,
+									$public);
+
+				$message = "Profilen uppdaterades utan problem";
+			}
 		}
 
 		
-		// If there are no errors & at least 1 of the above have been sent...
-		if ($newname || $newemail && count($errors) == 0) {
-			// Modify the user accordingly
-			modify_user($id,	$newname,
-								false,
-								$newemail,
-								$newdesc);
-			$message = "Profilen uppdaterades utan problem";
-		}		
+	
 		
-		$errors = clean_array($errors, array("name", "email"));
+		$errors = clean_array($errors, array("username", "email", "desc"));
 	
 		// Prepare lines-array
 		
 		$lines = array(
 			array(	"header"	=> "Anv&auml;ndarnamn", 
-					"input"		=> $name,
+					"input"		=> $username,
 					"maxlen"	=> 64,
-					"name"		=> 'name',
-					"error"		=> $errors["name"]
+					"name"		=> 'username',
+					"error"		=> $errors['username']
 			),
 			array(	"header"	=> "E-mailadress",
 					"input"		=> $email,
 					"maxlen"	=> 64,
 					"name"		=> 'email',
-					"error"		=> $errors["email"]
+					"error"		=> $errors['email']
 			),
 			array(	"header"	=> "Beskrivning",
 					"textarea"	=> $desc,
 					"maxlen"	=> 1024,
-					"name"		=> 'desc'
-			)
+					"name"		=> 'desc',
+					"error"		=> $errors['desc']
+			),
+			array(	"header"	=> "Tillg&auml;nglighet",
+					"checked"	=> true,
+					"selected"	=> $public,
+					"values"	=> array(0,1),
+					"options"	=> array("Privat", "Visas f&ouml;r andra"),
+					"name"		=> "public"
+				)
 		);
 
 		// Return 
