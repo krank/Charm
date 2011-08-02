@@ -40,6 +40,16 @@ body {
 	padding: 1em;
 }
 
+#pagefooter {
+	border-top: 1px solid #CCCCCC;
+	margin-left: -1em;
+	margin-right: -1em;
+	margin-top: 8em;
+	padding: 1em;
+	font-size: small;
+	color: #444444;
+}
+
 
 /* -----------------------------------------------------------------------------
     Top tools
