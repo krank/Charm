@@ -15,6 +15,7 @@
 	font-style: italic;
 	font-size: smaller;
 	padding-top: 2em;
+	box-shadow: 0px 0px 2px #999999;
 }
 
 #loggedin {
@@ -25,19 +26,32 @@
 body {
 	padding: 4em;
 	padding-left: 15em;
+	background-color: #FFFFFF;
 }
 
 #menu {
+	margin-top: 1em;
 	position: absolute;
 	left: 2em;
 	border: 1px solid #CCCCCC;
 	width: 9em;
 	padding: 1em;
+	padding-bottom: 2em;
+	background-color: #FFFFFF;
+	box-shadow: 0px 0px 2px #999999;
+	border-top-left-radius: 10px;
+	border-bottom-right-radius: 10px;
 }
 
 #content {
+	margin-top: 1em;
 	border: 1px solid #CCCCCC;
 	padding: 1em;
+	padding-right: 2em;
+	background-color: #FFFFFF;
+	box-shadow: 0px 0px 2px #999999;
+	border-top-left-radius: 10px;
+	border-bottom-right-radius: 10px;
 }
 
 #pagefooter {

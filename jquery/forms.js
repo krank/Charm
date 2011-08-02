@@ -252,7 +252,17 @@ function dynRow($row) {
 		.insertBefore($row.children(':last-child'))
 		.wrap('<div class="inner"/>')
 		.click(function(event) {
-			$field = addField($(event.target).parentsUntil('.row').parent()).fadeIn();
+			
+			if (event.shiftKey) {
+				// Find last field
+				$lastfield = $(this).parent().siblings('.field').last();
+				// Clone it, insert the clone, and fade it in.
+				$field = $lastfield.clone(true).hide().insertAfter($lastfield).fadeIn();
+			} else {
+				$field = addField($(event.target).parentsUntil('.row').parent()).fadeIn();
+			}
+			
+			
 
 			$field.find('input').click().focus();
 
