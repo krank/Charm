@@ -26,8 +26,14 @@ $(document).ready(function() {
 		
 	}
 	
+	// Make the groups sortable
+	$('#groups').sortable({handle: '.move',
+							placeholder: 'grouphighlight',
+							opacity : 0.6,
+							axis : 'y',
+							revert : true});
 	
-	
+	// Make the savebutton clickable
 	$('#save').click(function(){
 		makeXML();
 	});
@@ -44,22 +50,22 @@ function makeDynamic() {
 		$(this).find('.row').each(function(){
 			dynRow($(this));
 			
+			// Find all fields, add dynamics to each
 			$(this).find('.field').each(function(){
 				dynField($(this));
 			});
 			
 		});
-		
 	});
-	
-	
-	// Find all fields, add dynamics to each
+
 }
 
 
 function addGroup() {
-	
+	// Get current number of groups
 	glen = $('#groups .group').length;
+	
+	// Create the group element
 	$groupelem = $('<div class="group" id="g'+glen+'"><div class="groupheader"></div></div>')
 		.append($('<div></div')
 			.addClass('rows')
@@ -67,18 +73,16 @@ function addGroup() {
 		.hide()
 		.appendTo('#groups');
 	
+	// Find the group header
 	$ghead = $groupelem.find('.groupheader');
 	
 	// Append a header
 	$('<h2>Klicka på namnet för att ändra</h2>').appendTo($ghead);
 
 	// Hide Add button if there are too many groups
-	if (glen >= MAX_GROUPS-1) {
-		$('#addgroup').fadeOut();
-	}
+	if (glen >= MAX_GROUPS-1) $('#addgroup').fadeOut();
 	
-	
-	
+	// make the group dynamic
 	dynGroup($groupelem);
 	
 	return $groupelem;
@@ -87,6 +91,10 @@ function addGroup() {
 function dynGroup($group) {
 	// Add dynamics to header
 		$ghead = $group.find('.groupheader');
+		
+		// Add the move handle
+		$('<a class="button big move" name="movegroup"></a>')
+			.prependTo($ghead);
 		
 		// Add the big del button
 		$bigdelbutton = $('<a class="button big del" name="addgroup"></a>')
@@ -113,6 +121,11 @@ function dynGroup($group) {
 					.hide()
 					.bind('blur keydown', function(event) {
 						if (event.type == 'blur' || event.keyCode==13) {
+
+							if ($(this).attr('value') == '') {
+								$(this).attr('value', 'Klicka på namnet för att ändra')
+							}
+							
 							$(this)
 								.hide()
 								.siblings('h2')
@@ -141,17 +154,38 @@ function dynGroup($group) {
 		$('<a class="button add rows">L&auml;gg till en rad</a>')
 			.appendTo($group)
 				.click(function(event) {
-					addRow(event.target).slideDown('fast');
+					
+					if (event.shiftKey) {
+						// Find the last row
+						$last = $(this).siblings('.rows').children('.row').last();
+						
+						// Create a clone, and hide it
+						$new = $last.clone(true).hide();
+						
+						// Slide it in
+						$new.insertAfter($last).slideDown('fast');
+						
+					} else {
+						// Create a new row
+						$new = addRow(event.target).slideDown('fast');
+					}
 					
 					// Let the button fade out if the maximum number of rows
 					if ($(this).siblings('.row').length >= MAX_ROWS) {
 						$(this).fadeOut();
 					}
+					
+					$new.find('input').last().focus().click();
+					
 				});
 				
 		// Make the rows sortable
 		
-		$group.children('.rows').sortable({'handle': '.move'});
+		$group.children('.rows').sortable({handle		: '.move',
+											placeholder	: 'rowhighlight',
+											opacity		: 0.6,
+											axis		: 'y',
+											revert		: true});
 }
 
 function addRow(button) {
@@ -218,7 +252,9 @@ function dynRow($row) {
 		.insertBefore($row.children(':last-child'))
 		.wrap('<div class="inner"/>')
 		.click(function(event) {
-			addField($(event.target).parentsUntil('.row').parent()).fadeIn();
+			$field = addField($(event.target).parentsUntil('.row').parent()).fadeIn();
+
+			$field.find('input').click().focus();
 
 			// If the number of fields are [max], hide the button
 			if ($(this).parent().siblings('.field').length >= MAX_FIELDS) {
@@ -241,7 +277,7 @@ function addField($parent) {
 		.hide()
 		.attr('id',
 			$parent.attr('id') + 'f'+flen
-		);
+		)
 
 	if ($parent.find('.add').length != 0) {
 		$field.insertBefore($parent.find('.add').parent())
@@ -268,6 +304,52 @@ function dynField($field) {
 	} else {
 		type = 'text';
 	}
+	
+	$field.keydown(function(event) {
+			if (event.ctrlKey) {
+				switch(event.keyCode) {
+					case 37: // Left
+						if($(this).prev().length>0) {
+							$(this).prev().find('input').focus().click();
+						}
+						break;
+					case 39: // Right
+						if($(this).next().length>0) {
+							$(this).next().find('input').focus().click();
+						}
+						break;
+
+	
+					case 38: // Up
+						$prevcell = $(
+										$(this).parent().prev('.row').
+												children().
+												get(
+													$(this).index()
+												)
+									).find('input');
+						if ($prevcell.length > 0) {
+							$prevcell.click().focus();
+						}
+						break;
+					case 40: // Down
+						$nextcell = $(
+										$(this).parent().next('.row').
+												children().
+												get(
+													$(this).index()
+												)
+									).find('input');
+						if ($nextcell.length > 0) {
+							$nextcell.click().focus();
+						}
+						break;
+				}
+			}
+			
+		});
+	
+	
 
 	$field.empty();
 	
@@ -289,7 +371,7 @@ function dynField($field) {
 			}
 		})
 		.blur()
-		.appendTo($field);
+		.appendTo($field)
 		
 	$("<a class=\"button single type\" href=\"#\"></a>").appendTo($field)
 		.addClass("button single type "+type)

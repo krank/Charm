@@ -41,8 +41,6 @@ function checkerrors($values, $maxlengths) {
 
 function xmltoform($xmldata, $usetable=false) {
 	
-	//print $xmldata;
-	
 	$formhtml = "";
 	
 	$dom = new domDocument();
@@ -268,7 +266,7 @@ function showdata($source, $title, $id, $copyurl, $editurl=False, $makecharurl=F
 		$body = strtr($body,$tr);
 		
 	} else {
-		$body = "Didn't get no dataset";
+		$body = "Ok&auml;nd data";
 	}
 
 	// Return translated result
@@ -286,7 +284,6 @@ function datalist($source, $title, $type, $newurl=False, $userid=False) {
 	// Default offset & maxitems
 	$maxitems=15;
 	$offset=0;
-	$pagerspan = 5;
 	
 	// Get total number of items in list
 	if ($userid) {
@@ -309,7 +306,7 @@ function datalist($source, $title, $type, $newurl=False, $userid=False) {
 		$offset = intval($_GET['offset']);
 		
 		// Set offset to last page, if it's higher
-		$offset = min($num_items-($num_items % $maxitems), $offset); 
+		$offset = min($num_items-($num_items % $maxitems), $offset);
 	}
 	
 	
@@ -394,38 +391,47 @@ function datalist($source, $title, $type, $newurl=False, $userid=False) {
 
 }
 
-function makepager($type, $douser, $currentoffset, $maxitems, $num_items) {
+function makepager($type, $do_user, $current_offset, $max_items, $num_items) {
 	
 	// Create the pager
 
+	$pager_span = 3;
 	$pager = "";
 	
 	// The "back" arrow
-	$pager .= "<a href=\"?do=list$type"."s$douser&offset=".max(0,($currentoffset-$maxitems))."\">&lt;&lt;</a>";
+	$pager .= "<a href=\"?do=list$type"."s$do_user&offset=".max(0,($current_offset-$max_items))."\">&lt;&lt;</a>";
 	
 	// Calculate the current page
-	$currentpage = ($currentoffset / $maxitems)+1;
+	$current_page = ($current_offset / $max_items)+1;
 	
 	// Go through the valid pages; use ceil() to round up
-	for ($p=1; $p<=ceil($num_items/$maxitems); $p++) {
+	for ($p=1; $p<=ceil($num_items/$max_items); $p++) {
 		// If it's the current page, show an ineffectual link
-		if ($p == $currentpage) {
+		if ($p == $current_page) {
 			$pager .= "<a class=\"current\" href=\"#\"/>$p</a>";
 			
 		// if it's a page inside the pager's span (current page and x pages up/down), 
 		// show a link
-		} else if ($p > $currentpage-$pagerspan && $p < $currentpage+$pagerspan) {
-			$o = ($p-1)*$maxitems;
-			$pager .= "<a href=\"?do=list$type"."s$douser&offset=$o\">$p</a>";
+		} else if ($p > $current_page-$pager_span && $p < $current_page+$pager_span) {
+			$o = ($p-1)*$max_items;
+			$pager .= "<a href=\"?do=list$type"."s$do_user&offset=$o\">$p</a>";
 			
 		// if it's any of the two pages signaling the end of the pager's span, display ellipsis
-		} else if ($p == $currentpage+$pagerspan || $p == $currentpage-$pagerspan) {
+		} else if ($p == $current_page+$pager_span || $p == $current_page-$pager_span) {
 			$pager .= "&#0133;";
 		}
 	}
 	
+	// Only offsets resulting in valid pages should be available as Nexts.
+	
+	if ($current_offset+$max_items >= $num_items) {
+		$next_offset = $current_offset;
+	} else {
+		$next_offset = $current_offset+$max_items;
+	}
+	
 	// The "Next" arrow
-	$pager .="<a href=\"?do=list$type"."s$douser&offset=".max(0,($currentoffset+$maxitems))."\">&gt;&gt;</a>";
+	$pager .="<a href=\"?do=list$type"."s$do_user&offset=$next_offset\">&gt;&gt;</a>";
 	
 	return $pager;
 }

@@ -105,6 +105,10 @@ a.del.big {
 	background-image: url("../images/buttons/round_minus_large.png");
 }
 
+a.move.big {
+	background-image: url("../images/buttons/round_move_large.png");
+}
+
 a.add {
 	background-image: url("../images/buttons/round_plus.png");
 }

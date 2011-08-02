@@ -106,7 +106,12 @@ function editchar() {
 			
 			// Read the form
 			$datasource = getdataset('forms', $_GET['formid']);
+			
+			// Clean the forminfo to prepare for use as new character
 			$datasource['charid'] = "";
+			$datasource['name'] = "";
+			$datasource['description'] = "";
+			$datasource['public'] = 0;
 			
 			$charid = "";
 
@@ -134,6 +139,10 @@ function editchar() {
 
 	$tr['%charid%'] = $charid;
 	
+	if ($datasource["public"] == "1") {
+		$tr["%privchecked%"]	= "";
+		$tr["%publchecked%"]	= "checked";
+	}
 	
 	
 	if ($tr['%message%'] == "") {

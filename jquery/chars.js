@@ -41,9 +41,13 @@ $(document).ready(function() {
 							$('.left, .right').addClass('hidden');
 							
 							if ($(this).hasClass('empty')) {
-								$(this)
-									.attr('value', '')
-									.removeClass('empty');
+								$(this).removeClass('empty');
+								
+								if ($(this).hasClass('number')) {
+									$(this).attr("value", 0);
+								} else {
+									$(this).attr('value', '');
+								}
 							}
 						})
 						.blur()
@@ -65,8 +69,17 @@ $(document).ready(function() {
 					if (event.keyCode == 37) {
 						addtovalue($(this), -1);
 						event.preventDefault();
+						
 					} else if (event.keyCode == 39) {
 						addtovalue($(this), +1);
+						event.preventDefault();
+						
+					} else if (event.keyCode == 38) {
+						addtovalue($(this), +10);
+						event.preventDefault();
+						
+					} else if (event.keyCode == 40) {
+						addtovalue($(this), -10);
 						event.preventDefault();
 					}
 				});
@@ -112,7 +125,9 @@ function addtovalue($box, addition) {
 	number = makenum($box.attr('value'));
 	
 	if (number !== false) {
-		$box.attr('value', number+addition);
+		number = Math.min(255, number+addition);
+		number = Math.max(-255, number);
+		$box.attr('value', number);
 	} else {
 		$box.attr('value', '')
 	}
@@ -181,6 +196,10 @@ function makeXML() {
 				} else {
 					type = 'text';
 					value = $(this).find('input').attr('value');
+				}
+				
+				if ($(this).find('input').hasClass('empty')) {
+					value = "";
 				}
 				
 				var textNode = document.createTextNode (value);

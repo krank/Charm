@@ -1,8 +1,13 @@
+#groups {
+	padding-top: 15px;
+}
+
 .group {
 	width: 100%;
 	border-bottom: 2px solid #444444;
 	padding-right: 10px;
 	padding-bottom: 2em;
+	background-color: #FFFFFF;
 }
 
 .groupheader {
@@ -14,6 +19,12 @@
 	position: relative;
 	line-height: 36px;
 	margin-bottom: 1em;
+}
+
+.grouphighlight {
+	background-color: #DDDDDD;
+	height: 4em;
+	width: 100%;
 }
 
 
@@ -29,21 +40,24 @@
 .groupheader h2 {
 	color: #FFFFFF;
 	margin-bottom: 0;
-	margin-left: 48px;
+	margin-left: 1em;
+	float: left;
 }
 
 .groupheader h2.hovered {
 	cursor: pointer;
 }
 
-.groupheader input {
+#sheet .groupheader input {
 	border: none;
 	font-size: large;
 	font-family: sans-serif;
-	margin-left: 2.8em;
-	width: 23em;
+	margin-left: 1em;
+	width: 60%;
 	margin-top: .4em;
+	float: left;
 }
+
 
 
 .row {
@@ -66,6 +80,12 @@
 	margin-left: 0;
 }
 
+.rowhighlight {
+	height: 2.8em;
+	width: 100%;
+	background-color: #DDDDDD;
+	margin-left: 3em;
+}
 
 
 .row.hovered, .field.hovered {
@@ -157,6 +177,8 @@
 
 #sheet td.text {
 	border-bottom: 1px solid black;
+	height: 1.5em;
+	min-width: 5em;
 }
 
 #sheet td.header {
@@ -166,6 +188,7 @@
 
 #sheet td.number {
 	border-bottom: 1px solid black;
+	min-width: 2em;
 }
 
 #sheet td input.number {

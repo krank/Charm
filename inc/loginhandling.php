@@ -62,11 +62,11 @@ function makerandompass() {
 function login() {
 	
 	// Check if name & pass have been sent by POST
-	if (isset($_POST['name']) && isset($_POST['pass'])) {
+	if (isset($_POST['username']) && isset($_POST['pass'])) {
 		
 		// If they have, reduce them to 64 characters each
 		$pass = substr($_POST['pass'],0,64);
-		$name = substr($_POST['name'],0,64);
+		$name = substr($_POST['username'],0,64);
 		
 		// Try to get userdata based on username & password
 		$userdata = get_user($name, $pass);
@@ -94,7 +94,7 @@ function login() {
 		array(	"header"	=> "Anv&auml;ndarnamn", 
 				"input"		=> $name,
 				"maxlen"	=> 64,
-				"name"		=> 'name'
+				"name"		=> 'username'
 		),
 		array(	"header"	=> "L&ouml;senord",
 				"input"		=> "",
