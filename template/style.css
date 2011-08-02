@@ -259,6 +259,9 @@ table {
 	padding-left: .5em;
 }
 
+table td a.button {
+	float:right;
+}
 
 th {
 	background-color: #444444;

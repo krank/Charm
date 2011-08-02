@@ -28,8 +28,6 @@ function editchar() {
 		// If a saving POST is received...
 		// --- Get values from POST, and save them to database ---
 		
-		//print_r($_POST);
-		
 		if (isset($_POST['name'], $_POST['system'], $_POST['xml'], $_POST['public'], $_POST['charid'])) {
 
 			// Clean the POST

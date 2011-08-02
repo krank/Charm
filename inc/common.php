@@ -470,17 +470,30 @@ function makerows($result, $type, $userid, $loggedinuser) {
 		if (!$userid) {
 			// Create the owner username cell
 			$rows .= "\t<td>".$row['owner']."</td>\n";
+			$rows .= "\t<td>";
 			
 		// Otherwise, if userid is specified and a user is logged in...
 		} else if (isset($_SESSION['userid'])) {
 			
 			// And the logged-in user and the userid are one and the same...
 			if ($_SESSION['userid'] == $userid) {
-				
 				// Show a Delete button
-				$rows .= "\t<td><a class=\"single button del\" href=\"?do=del$type&$type"."id=$id\"></a></td>\n";
+				$rows .= "\t<td><a class=\"single button del\" title=\"Ta bort\" href=\"?do=del$type&$type"."id=$id\"></a>";
+				
+				// Show an Edit button
+				$rows .= "\t<a class=\"single button edit\" title=\"Redigera\" href=\"?do=edit$type&$type"."id=$id\"></a>";
+				
 			}
 		}
+		
+		if ($type == 'form') {
+			$rows .= "<a class=\"single button char\" title=\"Skapa rollperson\" href=\"?do=editchar&formid=$id\"></a>";
+		}
+		
+		// Show a Copy button
+		$rows .= "<a class=\"single button copy\" title=\"Kopiera\" href=\"?do=copy$type&$type"."id=$id\"></a>";
+		
+		$rows .= "</td>";
 		
 		// Finish off the rows
 		$rows .= "</tr>\n";
