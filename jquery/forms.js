@@ -135,6 +135,7 @@ function dynGroup($group) {
 							event.preventDefault();
 							return false;
 						}
+						return true;
 					})
 					)
 			.click(function() {
@@ -262,8 +263,6 @@ function dynRow($row) {
 				$field = addField($(event.target).parentsUntil('.row').parent()).fadeIn();
 			}
 			
-			
-
 			$field.find('input').click().focus();
 
 			// If the number of fields are [max], hide the button

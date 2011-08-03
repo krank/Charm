@@ -475,7 +475,7 @@ function makerows($result, $type, $userid, $loggedinuser) {
 			
 			
 			if ($row['public'] == 1) {
-				$rows .= "\t<td><a href=\"?do=showprofile&id={$row['userid']}\">{$row['owner']}</a></td>\n";
+				$rows .= "\t<td><a href=\"?do=showprofile&userid={$row['userid']}\">{$row['owner']}</a></td>\n";
 			} else {
 				$rows .= "\t<td>".$row['owner']."</td>\n";
 			}
