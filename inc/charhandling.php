@@ -108,7 +108,7 @@ function editchar() {
 			// Clean the forminfo to prepare for use as new character
 			$datasource['charid'] = "";
 			$datasource['name'] = "";
-			$datasource['description'] = "";
+			$datasource['desc'] = "";
 			$datasource['public'] = 0;
 			
 			$charid = "";
