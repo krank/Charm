@@ -504,7 +504,7 @@ function makerows($result, $type, $userid, $loggedinuser) {
 		}
 		
 		// Show a Copy button
-		$rows .= "<a class=\"single button copy\" title=\"Kopiera\" href=\"?do=copy$type&$type"."id=$id\"></a>";
+		$rows .= "<a class=\"single button copy\" title=\"Kopiera\" href=\"?do=edit$type&$type"."id=$id&makecopy\"></a>";
 		
 		$rows .= "</td>";
 		
