@@ -556,10 +556,10 @@ function deldata($source, $type, $id, $confirmationtext, $sorrytext) {
 	} else {
 		// If the user is not the owner, display an error 
 		$body = messagebox(array(
-			"header"		=> "&Auml;r du s&auml;ker?",
+			"header"		=> "Fel!",
 			"content"		=> $sorrytext,
 			"leftbutton"	=> "",
-			"rightbutton"	=> "<a class=\"button cross\" href=\"?do=list$type"."s&userid=$ownerid\">Nej</a>"
+			"rightbutton"	=> "<a class=\"button cross\" href=\"?do=list$type"."s&userid={$_SESSION['userid']}\">OK</a>"
 		));
 	}
 
