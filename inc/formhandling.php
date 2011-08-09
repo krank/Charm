@@ -128,7 +128,7 @@ function editform() {
 			$datasource = getdataset('forms', $_GET['formid']);
 
 			if (isset($_GET['makecopy']) && $datasource) {
-				$tr['%message%'] = "Formul&auml;ret har kopierats. Nedan ser du kopian, som kommer att sparas i din lista.";
+				$tr['%message%'] = "Formul&auml;ret har kopierats. Observera att du måste spara det manuellt för att det ska hamna i din lista.";
 				$datasource['formid'] = "";
 			} else if (isset($_GET['makecopy'])) {
 				$tr['%message%'] = "Kopieringen misslyckades - antagligen finns inte originalet i databasen.";

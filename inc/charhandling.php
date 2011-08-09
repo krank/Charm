@@ -85,7 +85,7 @@ function editchar() {
 			$charid = $_GET['charid'];
 			
 			if (isset($_GET['makecopy']) && $datasource) {
-				$tr['%message%'] = "Rollpersonen har kopierats. Nedan ser du kopian, som kommer att sparas i din lista.";
+				$tr['%message%'] = "Rollpersonen har kopierats. Observera att du måste spara den manuellt för att den ska hamna i din lista.";
 				$charid = "";
 			} else if (isset($_GET['makecopy'])) {
 				$tr['%message%'] = "Kopieringen misslyckades - antagligen finns inte originalet i databasen.";
