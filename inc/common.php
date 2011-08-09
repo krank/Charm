@@ -488,10 +488,12 @@ function makerows($result, $type, $userid, $loggedinuser) {
 		// Otherwise, if userid is specified and a user is logged in...
 		} else if (isset($_SESSION['userid'])) {
 			
+			$rows .= "\t<td>";
+			
 			// And the logged-in user and the userid are one and the same...
 			if ($_SESSION['userid'] == $userid) {
 				// Show a Delete button
-				$rows .= "\t<td><a class=\"single button del\" title=\"Ta bort\" href=\"?do=del$type&$type"."id=$id\"></a>";
+				$rows .= "<a class=\"single button del\" title=\"Ta bort\" href=\"?do=del$type&$type"."id=$id\"></a>";
 				
 				// Show an Edit button
 				$rows .= "\t<a class=\"single button edit\" title=\"Redigera\" href=\"?do=edit$type&$type"."id=$id\"></a>";
