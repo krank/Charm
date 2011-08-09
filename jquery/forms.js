@@ -122,7 +122,7 @@ function dynGroup($group) {
 					.bind('blur keydown', function(event) {
 						if (event.type == 'blur' || event.keyCode==13) {
 
-							if ($(this).attr('value') == '') {
+							if (jQuery.trim($(this).attr('value')) == '') {
 								$(this).attr('value', 'Klicka på namnet för att ändra')
 							}
 							
