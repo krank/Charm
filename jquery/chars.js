@@ -8,9 +8,16 @@ $(document).ready(function() {
 	
 	tabindex = 1;
 	
+	// For each td.text and td.number...
 	$('td.text, td.number').each(function(){
+		
+		// Get the value
 		value = $(this).text();
+		
+		// Get the class
 		cls = $(this).attr('class');
+		
+		// Add one to the tab index
 		tabindex += 1;
 		
 		
@@ -21,33 +28,31 @@ $(document).ready(function() {
 						.addClass(cls)
 						.attr('value', value)
 						.attr('maxlength', 32)
+						
+						// When input box is unfocused...
 						.blur(function(){
 							// if the input box is a number box, get and parse the number
-							if ($(this).hasClass('number')) {
-								addtovalue($(this), 0);
-							}
+
 							
-							// If the value of the imput box is '', set it to a default and
+							// If the value of the input box is '', set it to a default and
 							// make it show up as empty
 							if ($(this).attr('value') == '') {
+								
+								// "No text" is it's a text box, otherwise a 0.
 								if ($(this).hasClass('text')) $(this).attr('value', 'Ingen text');
 								else $(this).attr('value', 0);
 								
 								$(this).addClass('empty');
 							}
 						})
+						
+						// When input box is clicked on, focused on, or a key is pressed in it
 						.bind('click focus keydown', function(){
 							
-							$('.left, .right').addClass('hidden');
-							
+							// Check if it's empty - if it is, remove placeholder text
 							if ($(this).hasClass('empty')) {
 								$(this).removeClass('empty');
-								
-								if ($(this).hasClass('number')) {
-									$(this).attr("value", 0);
-								} else {
-									$(this).attr('value', '');
-								}
+								$(this).attr('value','');
 							}
 						})
 						.blur()
@@ -55,17 +60,22 @@ $(document).ready(function() {
 					
 		if (cls == 'number') {
 			$('<a href="#"></a>')
-				.addClass('button single right')
+				.addClass('button single right hidden')
 				.appendTo($(this));
 				
 			$('<a href="#"></a>')
-				.addClass('button single left')
+				.addClass('button single left hidden')
 				.prependTo($(this));
 				
 			$(this).children('input')
 				.bind('focus click keydown', function(event) {
+					
+					// When a Number-input box is focused on, hide all other
+					// arrow links, and show the input box's.
+					$('.left, .right').addClass('hidden');
 					$(this).siblings('.left, .right').removeClass('hidden');
 					
+					// Use keycodes to determine how much to add to the value
 					if (event.keyCode == 37) {
 						addtovalue($(this), -1);
 						event.preventDefault();
@@ -81,24 +91,51 @@ $(document).ready(function() {
 					} else if (event.keyCode == 40) {
 						addtovalue($(this), -10);
 						event.preventDefault();
-					}
+					}	
+				})
+				.blur(function(){
+					addtovalue($(this), 0);
 				});
 				
 			$(this).children('a')
-				.click( function(){
-					// Parse the input's value as a float
+				.click( function(event){
+
+					// Get the box element
 					$boxelem = $(this).siblings('input');
 					
 					if ($(this).hasClass("right")) addition = 1;
 					else addition = -1;
 					
+					if (event.shiftKey) {
+						addition *= 10;
+					}
+					
 					// Use addtovalue to make sure it's a number
-					addtovalue($boxelem, addition).removeClass('empty').blur();
+					addtovalue($boxelem, addition).removeClass('empty');
+					
+					$boxelem.click().focus();
+					$(this).removeClass('hidden');
 					
 					// Prevent default
 					event.preventDefault();
 					return false;
-				});
+				})
+				
+				.hover(function(){
+					
+					// When mouse is over either link, show them both
+					$(this).parent().children('a').removeClass('hidden');
+					
+					}, function(){
+					
+					// If the element's input sibling isn't focused
+					if ($(this).siblings('input:focus').length == 0) {
+						
+						// Hide the link arrow on mouseout
+						$(this).parent().children('a').addClass('hidden');
+					}
+				})
+				;
 		}
 					
 	});

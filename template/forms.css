@@ -238,6 +238,10 @@ a.move:hover {
 	margin-left: .3em;
 }
 
+
+
+
+
 a.right.hidden, a.left.hidden {
 	background-image: none;
 }
@@ -245,5 +249,10 @@ a.right.hidden, a.left.hidden {
 
 #sheet td input.number {
 	margin-left: 0px;
+	margin-right: .3em;
+}
+
+#sheet td input.number.unselected {
+	margin-left: 18px;
 	margin-right: .3em;
 }
