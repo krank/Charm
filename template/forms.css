@@ -65,15 +65,17 @@
 .row {
 	padding-top: .5em;
 	margin-bottom: .5em;
-	margin-left: 2em;
-	padding-left: 1em;
 	line-height: 2em;
 	background-color: #FFFFFF;
 }
 
 .row .inner {
-	float: left;
-	height: 2em;
+	/*height: 2em;*/
+	position:relative;
+}
+
+.inner.buttons div {
+	width: 3em;
 }
 
 .row a {
@@ -112,9 +114,14 @@
 }
 
 
-.field {
-	margin-right: 2em;
+#sheet.edit .field {
 	position: relative;
+}
+
+#sheet.edit .innerWrapper {
+	height: 100%;
+	padding-top: .7em;
+	width: 12em;
 }
 
 .field a.button.single{
@@ -122,9 +129,15 @@
 	margin-left: 5px;
 }
 
+.inner a.button.single.add {
+	float: left;
+}
+
+
 .field.inner ul {
 	position: absolute;
-	right: -18px;
+	right: -100px;
+	width: 150px;
 	top: 20px;
 	background-color: #FFFFFF;
 	border: 1px solid #444444;
@@ -140,7 +153,7 @@
 }
 
 .field.inner a {
-	position: relative;
+	float: left;
 }
 
 .field.inner li a:hover {
@@ -173,8 +186,12 @@
 
 #sheet td {
 	vertical-align: middle;
-	border-left: 1em solid #FFFFFF;
+	margin-left: 1em;
 	padding-right: .3em;
+}
+
+#sheet.view td {
+	border-left: 1em solid #FFFFFF;
 }
 
 #sheet td.static {

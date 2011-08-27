@@ -157,7 +157,7 @@ function editform() {
 		$tr["%$v"."_str%"] = $datasource[$v];
 	}
 
-	$tr["%xml_str%"] = xmltoform($datasource['xml']);
+	$tr["%xml_str%"] = xmltoform($datasource['xml'],true);
 
 	$tr['%formid%'] = $datasource['formid'];
 	

@@ -53,11 +53,12 @@ function makeDynamic() {
 			// Find all fields, add dynamics to each
 			$(this).find('.field').each(function(){
 				dynField($(this));
+				
+				$(this).removeClass("static text number header");
 			});
 			
 		});
 	});
-
 }
 
 
@@ -67,7 +68,7 @@ function addGroup() {
 	
 	// Create the group element
 	$groupelem = $('<div class="group" id="g'+glen+'"><div class="groupheader"></div></div>')
-		.append($('<div></div')
+		.append($('<table></table')
 			.addClass('rows')
 			)
 		.hide()
@@ -157,18 +158,25 @@ function dynGroup($group) {
 				.click(function(event) {
 					
 					if (event.shiftKey) {
+						
+						// Find the table body element
+						
+						$tableBody = $(this).prev('table').children('tbody');
+						
+						
+						
 						// Find the last row
-						$last = $(this).siblings('.rows').children('.row').last();
+						$last = $tableBody.find('.row').last();
 						
 						// Create a clone, and hide it
 						$new = $last.clone(true).hide();
 						
 						// Slide it in
-						$new.insertAfter($last).slideDown('fast');
+						$new.insertAfter($last).slideDown('fast').attr('style','');
 						
 					} else {
 						// Create a new row
-						$new = addRow(event.target).slideDown('fast');
+						$new = addRow(event.target).slideDown('fast').attr('style',"");
 					}
 					
 					// Let the button fade out if the maximum number of rows
@@ -182,7 +190,8 @@ function dynGroup($group) {
 				
 		// Make the rows sortable
 		
-		$group.children('.rows').sortable({handle		: '.move',
+		$group.children('table').wrapInner('<tbody>');
+		$group.find('tbody').sortable({handle		: '.move',
 											placeholder	: 'rowhighlight',
 											opacity		: 0.6,
 											axis		: 'y',
@@ -194,7 +203,7 @@ function addRow(button) {
 	plen = $parent.children('.row').length;
 
 	// Container
-	$rowelem = $('<div class="row"></div>')
+	$rowelem = $('<tr class="row"></div>')
 		.attr('id', $parent.attr('id')+'r'+plen)
 		.hide()
 		.appendTo($parent);
@@ -202,10 +211,7 @@ function addRow(button) {
 	
 	
 	// Add the first field
-	addField($rowelem).show();
-	
-	// Add the clearing element
-	$('<div style="clear:both;" />').appendTo($rowelem);
+	addField($rowelem).show().attr('style','');
 	
 	// Make the row dynamic
 	dynRow($rowelem);
@@ -220,6 +226,10 @@ function dynRow($row) {
 	$('<a href="#" class="single del button"></a>')
 		.prependTo($row)
 		
+		//Wrap them both
+		.wrap('<td class="inner buttons"/>')
+		.wrap('<div/>')
+		
 		// The move handle
 		.after($('<a class="move"></a>')
 			.addClass('button')
@@ -230,8 +240,7 @@ function dynRow($row) {
 			})
 		)
 			
-		//Wrap them both
-		.wrap('<div class="inner"/>')
+
 		.hover(function() {
 			$(this).parentsUntil('.row').parent().addClass("hovered");
 		}, function() {
@@ -250,8 +259,8 @@ function dynRow($row) {
 		
 	// Add Field button
 	$('<a href="#" class="single add button fields"></a>')
-		.insertBefore($row.children(':last-child'))
-		.wrap('<div class="inner"/>')
+		.insertAfter($row.children(':last-child'))
+		.wrap('<td class="inner"/>')
 		.click(function(event) {
 			
 			if (event.shiftKey) {
@@ -260,7 +269,7 @@ function dynRow($row) {
 				// Clone it, insert the clone, and fade it in.
 				$field = $lastfield.clone(true).hide().insertAfter($lastfield).fadeIn();
 			} else {
-				$field = addField($(event.target).parentsUntil('.row').parent()).fadeIn();
+				$field = addField($(event.target).parentsUntil('.row').parent()).fadeIn().attr('style','');
 			}
 			
 			$field.find('input').click().focus();
@@ -281,7 +290,7 @@ function addField($parent) {
 
 	flen = $parent.children('.field').length;
 	
-	$field = $('<div class="inner field"></div>')
+	$field = $('<td class="inner field"></div>')
 		.append($('<a class="button single text type" href="#"></a>'))
 		.hide()
 		.attr('id',
@@ -362,6 +371,7 @@ function dynField($field) {
 
 	$field.empty();
 	
+	
 	// The input box
 	$('<input type="text">')
 		.attr('value',text)
@@ -402,8 +412,9 @@ function dynField($field) {
 		.mouseleave(function(){
 			$(this).fadeOut('fast');
 		})
-		.wrapInner('<li />')
 		.appendTo($field);
+		
+	$field.find('ul a.button').wrap('<li>');
 		
 	// Delete button
 	$('<a class="button single del" href="#"></a>')
@@ -419,7 +430,7 @@ function dynField($field) {
 			$(this).parent()
 				.fadeOut()
 				.queue(function() {
-						$(this).remove();
+						$(this).parent().remove();
 					})
 			event.preventDefault();
 			return false;
@@ -429,6 +440,19 @@ function dynField($field) {
 		})
 		.appendTo($field);
 		
+		
+		
+	var $divWrap = $("<div />", {
+	"class": "innerWrapper",
+	"css"  : {
+			"position": "relative"
+		}
+	});
+		
+		
+		
+		
+	$field.wrapInner($divWrap);
 		
 }
 
@@ -493,7 +517,7 @@ function makeXML() {
 				// Set the type
 				
 				var type;
-				var $typeelem = $(this).children('.type');
+				var $typeelem = $(this).find('.type');
 				
 				if ($typeelem.hasClass('text')) {
 					type = 'text';
@@ -522,6 +546,8 @@ function makeXML() {
 		string = (new XMLSerializer()).serializeToString(xmlDoc);
 	}
 	
+	alert(string);
+	
 	$('#xml').attr('value',string);
 
 }
@@ -542,6 +568,8 @@ function typeButton(text, typeClass) {
 							.parent().children('.type')
 								.removeClass('text static header number')
 								.addClass(typeClass);
+								
+								
 						event.preventDefault();
 						return false;
 					})

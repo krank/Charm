@@ -39,7 +39,7 @@ function checkerrors($values, $maxlengths) {
 	
 }
 
-function xmltoform($xmldata, $usetable=false) {
+function xmltoform($xmldata, $editing=false) {
 	
 	$formhtml = "";
 	
@@ -61,16 +61,14 @@ function xmltoform($xmldata, $usetable=false) {
 							."<div class=\"groupheader\"><h2>$title</h2></div>\n";
 
 			
-			if ($usetable)	$formhtml .= "\n\t<table>\n";
-			else			$formhtml .= "\n\t<div class=\"rows\">\n";
+			$formhtml .= "\n\t<table class=\"rows\">\n";
 			
 			
 			$rows = $group->getElementsByTagName('row');
 
 			foreach ($rows as $row) {
 				$rid = $row->getAttribute('id');
-				if ($usetable) $formhtml	.= "\t<tr id=\"$rid\">\n";
-				else $formhtml				.= "\t<div id=\"$rid\" class=\"row\">";
+				$formhtml	.= "\t<tr class=\"row\" id=\"$rid\">\n";
 
 				$fields = $row->getElementsByTagName('field');
 				
@@ -79,18 +77,13 @@ function xmltoform($xmldata, $usetable=false) {
 					$value = $field->nodeValue;
 					$fid = $field->getAttribute('id');
 
-					if ($usetable) $formhtml	.= "\t\t<td class=\"$type\" id=\"$fid\">$value</td>\n";
-					else $formhtml				.= "\n\t\t<div class=\"inner field $type\" id=\"$fid\">"
-														.$value
-													."</div>";
+					$formhtml	.= "\t\t<td class=\"inner field $type\" id=\"$fid\">$value</td>\n";
 				}
 
-				if ($usetable) $formhtml .= "\t</tr>\n";
-				else $formhtml .= "\n<div style=\"clear: both;\"></div>\n</div>";
+				$formhtml .= "\t</tr>\n";
 			}
 
-			if ($usetable)	$formhtml .= "\n\t</table>\n";
-			else			$formhtml .= "\n\t</div>\n";
+			$formhtml .= "\n\t</table>\n";
 
 
 			$formhtml .= "</div>";
@@ -236,7 +229,7 @@ function showdata($source, $title, $id, $copyurl, $editurl=False, $makecharurl=F
 		}
 
 		// Generate HTML from XML
-		$tr["%xml_str%"] = xmltoform($datasource['xml'], true);
+		$tr["%xml_str%"] = xmltoform($datasource['xml']);
 
 
 		
