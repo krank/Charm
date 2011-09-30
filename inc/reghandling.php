@@ -1,8 +1,5 @@
 <?php
 
-include_once 'inc/userhandling.php';
-
-
 function regform($errors = array()) {
 	$post = clean_array($_POST, array('name','mail'));
 	$errors = clean_array($errors, array("name","mail","pass"));
