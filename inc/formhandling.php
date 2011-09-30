@@ -5,7 +5,6 @@ error_reporting(E_ALL);
 
 include_once 'inc/settings.php';
 include_once 'inc/db.php';
-include_once 'inc/common.php';
 
 function listforms() {
 	if (isset($_GET['userid'])) {

@@ -3,38 +3,40 @@
 ini_set('display_errors',1);
 error_reporting(E_ALL);
 
-include_once 'inc/userhandling.php';
-include_once 'inc/reghandling.php';
-include_once 'inc/loginhandling.php';
-include_once 'inc/formhandling.php';
-include_once 'inc/charhandling.php';
-include_once 'inc/profilehandling.php';
+include_once 'inc/common.php';
 
 session_start();
 
-$action = array(	'register',
-					'login',
-					'logout',
-					'forgot',
+// Setup possible/allowed actions
+$action = array(	'register' => array('reghandling', 'userhandling'),
+					'login' => array('loginhandling', 'userhandling'),
+					'logout' => array('loginhandling'),
+					'forgot' => array('loginhandling', 'userhandling'),
 	
-					'listforms',
-					'editform',
-					'showform',
-					'delform',
+					'listforms' => array('formhandling', 'userhandling'),
+					'editform' => array('formhandling'),
+					'showform' => array('formhandling'),
+					'delform' => array('formhandling'),
 	
-					'editchar',
-					'showchar',
-					'listchars',
-					'delchar',
+					'listchars' => array('charhandling', 'userhandling'),
+					'editchar' => array('charhandling'),
+					'showchar' => array('charhandling'),
+					'delchar' => array('charhandling'),
 	
-					'showprofile',
-					'editprofile',
-					'changepass',
-					'changepic'
+					'showprofile' => array('profilehandling', 'userhandling'),
+					'editprofile' => array('profilehandling', 'userhandling'),
+					'changepass' => array('profilehandling', 'userhandling'),
+					'changepic' => array('profilehandling','userhandling')
 					);
 
 if (isset($_GET['do'])) {
-	if (in_array($_GET['do'], $action)) {
+	if (array_key_exists($_GET['do'], $action)) {
+		
+		// Go through the importables
+		foreach ($action[$_GET['do']] as $file) {
+			include_once("inc/$file.php");
+		}
+		
 		print call_user_func($_GET['do']);
 	} else {
 		print template("<h2>Ok&auml;nt kommando</h2>");
