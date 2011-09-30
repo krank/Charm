@@ -116,6 +116,7 @@ function login() {
 
 function logout() {
 	$_SESSION['userid'] = null;
+	$_SESSION['level'] = null;
 	session_destroy();
 	return template("Du &auml;r nu utloggad.");
 }

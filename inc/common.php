@@ -582,14 +582,35 @@ function messagebox($pieces) {
 function makemenu($list) {
 	$mnu = "<ul class=\"menu\">\n";
 	
-	foreach ($list as $key => $value) {
-		if ($value != '') {
-			$mnu .= "\t<li><a href=\"?do=$value\">$key</a></li>\n";
-		} else {
-			$mnu .= "</ul><hr><ul class=\"menu\">";
+	// Clean the level
+	if (isset($_SESSION['level'])) {
+		$lvl = $_SESSION['level'];
+	} else {
+		$lvl = -200;
+	}
+    
+	//$mnu .= $lvl;
+	
+	// Go through the menu
+	foreach ($list as $key => $content) {
+            
+		// Name the two parts for clarity
+		$value = $content[0];
+		$permission = $content[1];
+
+		if ($permission === '*'  // Is the menu item available for everyone?
+				|| ($permission >= 0 && $lvl >= $permission) // Is the menu item available to logged-in users of the current user's level?
+				|| ($permission == -1 && $lvl == -200) // Is the menu item available specivivally when not logged in?
+		){
+			// If the item hasn't got a value, it's a divider
+			if ($value != '') {
+					$mnu .= "\t<li><a href=\"?do=$value\">$key</a></li>\n";
+			} else { 
+					$mnu .= "</ul><hr><ul class=\"menu\">";
+			}
 		}
 	}
-	
+        
 	return $mnu . "</ul>"; 
 }
 
@@ -598,50 +619,54 @@ function template($content="") {
 	
 	$tr = array();
 	
+	// Set the head replacement
 	$tr['%head%'] = "";
+	
+	// Prepare the content
 	$split_content = preg_split("/\|---/",$content);
 	if (sizeof($split_content) > 1) {
 		$content = $split_content[1];
 		$tr['%head%'] = $split_content[0];
 	}
 	
+	// Set the content replacement
 	$tr['%content%'] = $content;
 
-	
-	
-	$menu = array(	'Alla rollpersoner' => 'listchars',
-					'Alla rollformul&auml;r' => 'listforms',
-					'cmd1' => '');
-	
-	// Check if a user is logged in
-	if (isset($_SESSION['userid'])) {
-		$menu = array_merge($menu, array(
-						'Dina rollpersoner' => 'listchars&userid='.$_SESSION['userid'],
-						'Dina rollformul&auml;r' => 'listforms&userid='.$_SESSION['userid'],
-						'Din profil' => 'showprofile',
-						'Logga ut' => 'logout'
-					));
-		$tr['%loggedinstr%'] = "Inloggad som " . $_SESSION['username'];
-		
-		
-		if ($_SESSION['level'] == 1) {
-			$menu = array_merge($menu, array(
-						'cmd2' => '',
-						'Skriv nyhet' => 'newarticle'
-					));
-		}
+	// Clean up the session
+	$sess = clean_array($_SESSION, array('userid','level'));
 
+	// Create the menu as a multidimensional array
+	$menu = array(
+		'Alla rollpersoner' => array('listchars', '*'),
+		'Alla rollformul&auml;r' => array('listforms', '*'),
+		
+		'cmd1' => array('', 0),
+		'Dina rollpersoner' => array('listchars&userid='.$sess['userid'], 0),
+		'Dina rollformul&auml;r' => array('listforms&userid='.$sess['userid'], 0),
+		'Din profil' => array('showprofile',0),
+		'Logga ut' => array('logout',0),
+		
+		'cmd2' => array('',1),
+		'Skapa nyhet' => array('editarticle',1),
+		'Hantera nyheter' => array('listarticles',1),
+		
+		'cmd3' => array('', -1),
+		'Logga in' => array('login',-1),
+		'Registrera dig' => array('register',-1)
+
+	);
+
+	$tr['%menu%'] = makemenu($menu);
+	
+	
+	// get the replacement for the logged-in string
+	
+	if (isset($_SESSION['userid'])) {
+		$tr['%loggedinstr%'] = "Inloggad som " . $_SESSION['username'];
 	} else {
-		$menu = array_merge($menu,array(	'Alla rollpersoner' => 'listchars',
-						'Alla rollformul&auml;r' => 'listforms',
-						'cmd1' => '',
-						'Logga in' => 'login',
-						'Registrera dig' => 'register'
-					));
 		$tr['%loggedinstr%'] = "Inte inloggad";
 	}
 	
-	$tr['%menu%'] = makemenu($menu);
 	
 	$output = strtr($base, $tr);
 	
