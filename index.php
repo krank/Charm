@@ -23,6 +23,8 @@ $action = array(	'register' => array('reghandling', 'userhandling'),
 					'showchar' => array('charhandling'),
 					'delchar' => array('charhandling'),
 	
+					'editarticle' => array('newshandling'),
+	
 					'showprofile' => array('profilehandling', 'userhandling'),
 					'editprofile' => array('profilehandling', 'userhandling'),
 					'changepass' => array('profilehandling', 'userhandling'),

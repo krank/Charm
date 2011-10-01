@@ -688,13 +688,14 @@ function makelines($lines) {
 		
 		if (isset($line['input'])) {
 			$text = $line['input'];
-			$maxlength = $line['maxlen'];
+			
+			if (isset($line['maxlength']))   $maxlength = $line['maxlen'];
+			else $maxlength = "";
+			
 			$name = $line['name'];
-			if (isset($line['type'])) {
-				$type = $line['type'];
-			} else {
-				$type = "text";
-			}
+			
+			if (isset($line['type']))    $type = $line['type'];
+			else $type = "text";
 			
 			$out .= "\t<div class=\"formtext\">"
 						."<input type=\"$type\" name=\"$name\" value=\"$text\" maxlength=\"$maxlength\">"
