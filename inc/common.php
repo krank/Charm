@@ -704,8 +704,15 @@ function makelines($lines) {
 			$text = $line['textarea'];
 			$maxlength = $line['maxlen'];
 			$name = $line['name'];
+			
+			if (isset($line['class'])) {
+				$class = " class=\"{$line['class']}\"";
+			} else {
+				$class="";
+			}
+			
 			$out .= "\t<div class=\"formtext\">"
-						."<textarea name=\"$name\" maxlength=\"$maxlength\">$text</textarea>"
+						."<textarea name=\"$name\" $class maxlength=\"$maxlength\">$text</textarea>"
 					."</div>\n";
 		} else if (isset($line['text'])) {
 			$out .= "\t<div class=\"formtext\">".$line['text']."</div>\n";

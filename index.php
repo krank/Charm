@@ -24,6 +24,7 @@ $action = array(	'register' => array('reghandling', 'userhandling'),
 					'delchar' => array('charhandling'),
 	
 					'editarticle' => array('newshandling'),
+					'article' => array('newshandling'),
 	
 					'showprofile' => array('profilehandling', 'userhandling'),
 					'editprofile' => array('profilehandling', 'userhandling'),
@@ -57,7 +58,10 @@ if (isset($_GET['do'])) {
 		print showform($first[1]);
 		
 	} else {
-		print template();
+		include_once 'inc/frontpage.php';
+		include_once 'inc/newshandling.php';
+		
+	    print frontpage();
 	}
 }
 

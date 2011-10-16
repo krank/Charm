@@ -14,9 +14,10 @@ function editarticle() {
 	
 	// If an article ID was specified in the URL...
 	if (isset($_GET['id'])) {
-		// ...and that article exists, load it
 		// ...and that article doesn't exist, tell that in the message. And show empty values.
 		$cleanpost = array('title' => '', 'content' => '', 'id' => '');
+		
+		// ...and that article exists, load it
 		
 	// If it was not, get stuff from POST
 	} else {
@@ -33,7 +34,7 @@ function editarticle() {
 			
 			if (count($errors) == 0) {
 				$title = strip_tags($cleanpost['title']);
-				$content = htmlentities($cleanpost['content']);
+				$content = htmlentities($cleanpost['content'], ENT_QUOTES, "UTF-8");
 				$id = $cleanpost['id'];
 				
 				// If POST includes an ID, insert article as that ID
@@ -87,6 +88,56 @@ function editarticle() {
 	}
 	
 	return template("Du har inte tillräckliga rättigheter för att göra det här.");
+}
+
+function news_stream($include_text=false, $maxitems=10) {
+    
+    
+    if ($include_text) {
+        $andtext = ", text";
+    } else {
+        $andtext = "";
+    }
+	
+	
+    $query = "SELECT id, title, $andtext DATE_FORMAT( date, '%d/%m %Y' ) AS date FROM news ORDER BY date LIMIT 0,10";
+    $result = makequery($query);
+    
+    $output = "";
+	
+	while($row = mysql_fetch_array($result)) {
+		$output .= "<tr><td><a href=\"?do=article&id={$row['id']}\">{$row['title']}</a></td><td>{$row['date']}</td>";
+	}
+    
+	return $output;
+}
+
+
+function article() {
+	if (isset($_GET['id'])) {
+		$id = $_GET['id'];
+		$tr = array('%title%' => 'Article does not exist', '%date%' => '', '%content%' => 'Please check your URL');
+		
+		$query = "SELECT title, content, DATE_FORMAT( date, '%d/%m %Y' ) AS date FROM news WHERE id=$id";
+		
+		$result = makequery($query);
+		
+		$article = mysql_fetch_array($result);
+		
+		if ($article) {
+			$tr['%title%'] = $article['title'];
+			$tr['%date%'] = $article['date'];
+			$tr['%content%'] = nl2br($article['content']);
+		}
+		
+		$content = file_get_contents('./template/articleview_tpl.html');
+		$content = strtr($content, $tr);
+		
+		return template($content);
+		
+	} else {
+		return template('<h2>Ingen artikel specifierad</h2>');
+	}
 }
 
 ?>
