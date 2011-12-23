@@ -29,7 +29,10 @@ $action = array(	'register' => array('reghandling', 'userhandling'),
 					'showprofile' => array('profilehandling', 'userhandling'),
 					'editprofile' => array('profilehandling', 'userhandling'),
 					'changepass' => array('profilehandling', 'userhandling'),
-					'changepic' => array('profilehandling','userhandling')
+					'changepic' => array('profilehandling','userhandling'),
+	
+					'watch' => array('followhandling', 'userhandling'),
+					'unwatch' => array('followhandling', 'userhandling')
 					);
 
 if (isset($_GET['do'])) {

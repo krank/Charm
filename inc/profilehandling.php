@@ -10,6 +10,28 @@ function showprofile() {
 	if (isset($_GET['userid'])) {
 		$userid = $_GET['userid'];
 		$checkpublic = true;
+
+		
+		// Check if a user is logged in.
+		if (isset($_SESSION['userid'])) {
+			
+			// Get watchlist stuff now that we know it'll be needed
+			include_once('inc/followhandling.php');
+			
+			// Check if the user is watched by the logged-in user
+			if (isWatchedBy($_SESSION['userid'], $userid)) {
+				// Display a "unwatch"-button
+				$tr['%toptools%'] = "\n<a href=\"?do=unwatch&userid=".$userid."\" class=\"button\">Sluta bevaka den här anv&auml;ndaren</a>";
+			} else {
+
+				$tr['%toptools%'] = "\n<a href=\"?do=watch&userid=".$userid."\" class=\"button\">Bevaka den här anv&auml;ndaren</a>";
+			}
+			
+			
+		}
+
+
+ 
 		
 	// If it hasn't, and a user is logged in, display the logged-in user
 	} elseif (isset($_SESSION['userid'])) {
@@ -22,7 +44,7 @@ function showprofile() {
 			$tr['%toptools%'] =	 "\n<a href=\"?do=changepass\" class=\"edit button\">&Auml;ndra l&ouml;senord</a>"
 								."\n<a href=\"?do=editprofile\" class=\"edit button\">Redigera profil</a>"
 								."\n<a href=\"?do=changepic\" class=\"edit button\">&Auml;ndra profilbild</a>";
-		}
+		} 
 
 	} else {
 		$userid = false;
