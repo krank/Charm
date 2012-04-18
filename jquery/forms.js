@@ -546,8 +546,6 @@ function makeXML() {
 		string = (new XMLSerializer()).serializeToString(xmlDoc);
 	}
 	
-	alert(string);
-	
 	$('#xml').attr('value',string);
 
 }

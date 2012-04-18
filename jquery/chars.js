@@ -57,8 +57,7 @@ $(document).ready(function() {
 						})
 						.blur()
 				);
-					
-		if (cls == 'number') {
+		if (cls.indexOf('number') != -1) {
 			$('<a href="#"></a>')
 				.addClass('button single right hidden')
 				.appendTo($(this));
@@ -76,19 +75,19 @@ $(document).ready(function() {
 					$(this).siblings('.left, .right').removeClass('hidden');
 					
 					// Use keycodes to determine how much to add to the value
-					if (event.keyCode == 37) {
+					if (event.keyCode == 37) { // Left key
 						addtovalue($(this), -1);
 						event.preventDefault();
 						
-					} else if (event.keyCode == 39) {
+					} else if (event.keyCode == 39) { // Right key
 						addtovalue($(this), +1);
 						event.preventDefault();
 						
-					} else if (event.keyCode == 38) {
+					} else if (event.keyCode == 38) { // Up key
 						addtovalue($(this), +10);
 						event.preventDefault();
 						
-					} else if (event.keyCode == 40) {
+					} else if (event.keyCode == 40) { // Down key
 						addtovalue($(this), -10);
 						event.preventDefault();
 					}	
