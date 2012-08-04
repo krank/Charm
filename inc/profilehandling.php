@@ -18,13 +18,15 @@ function showprofile() {
 			// Get watchlist stuff now that we know it'll be needed
 			include_once('inc/followhandling.php');
 			
+			$tr['%toptools%'] = "<a class=\"rss button\" href=\"./rss.php?id=$userid\">Följ anv&auml;ndaren via RSS</a>";
+			
 			// Check if the user is watched by the logged-in user
 			if (isWatchedBy($_SESSION['userid'], $userid)) {
 				// Display a "unwatch"-button
-				$tr['%toptools%'] = "\n<a href=\"?do=unwatch&userid=".$userid."\" class=\"button\">Sluta bevaka den här anv&auml;ndaren</a>";
+				$tr['%toptools%'] .= "\n<a href=\"?do=unwatch&userid=".$userid."\" class=\"button\">Sluta bevaka den här anv&auml;ndaren</a>";
 			} else {
 
-				$tr['%toptools%'] = "\n<a href=\"?do=watch&userid=".$userid."\" class=\"button\">Bevaka den här anv&auml;ndaren</a>";
+				$tr['%toptools%'] .= "\n<a href=\"?do=watch&userid=".$userid."\" class=\"button\">Bevaka den här anv&auml;ndaren</a>";
 			}
 			
 			
@@ -41,7 +43,8 @@ function showprofile() {
 		// If the id belongs to the logged-in user
 		if ($userid == $_SESSION['userid']) {
 			// Display various user-centric stuff
-			$tr['%toptools%'] =	 "\n<a href=\"?do=changepass\" class=\"edit button\">&Auml;ndra l&ouml;senord</a>"
+			$tr['%toptools%'] =	 "\n<a class=\"rss button\" href=\"./rss.php?id=$userid\">RSS-flöde</a>"
+								."<a href=\"?do=changepass\" class=\"edit button\">&Auml;ndra l&ouml;senord</a>"
 								."\n<a href=\"?do=editprofile\" class=\"edit button\">Redigera profil</a>"
 								."\n<a href=\"?do=changepic\" class=\"edit button\">&Auml;ndra profilbild</a>";
 		} 

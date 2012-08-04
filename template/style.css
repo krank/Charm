@@ -192,6 +192,10 @@ a.right {
 	margin-left: 0;
 }
 
+a.rss {
+	background-image: url("../images/buttons/white_rss.png");
+}
+
 
 /* -----------------------------------------------------------------------------
     Message box

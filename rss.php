@@ -154,9 +154,10 @@ if (count($_GET) == 0) {
 		
 		$rsstitle = "Rollperson.se: ";
 
-		if ($useforms) $rssc = "Rollformul&auml;r";
-		if ($useforms && $usechars) $rssc = " och ";
-		if ($usechars) $rssc = "Rollpersoner";
+		$rssc = "";
+		if ($useforms) $rssc .= "Rollformulär";
+		if ($useforms && $usechars) $rssc .= " och ";
+		if ($usechars) $rssc .= "Rollpersoner";
 		
 		$rsstitle .= $rssc;
 		

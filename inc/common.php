@@ -380,6 +380,22 @@ function datalist($source, $title, $type, $newurl=False, $userid=False) {
 		$tr['%pager%'] = "";
 	}
 	
+	// Create RSS link, if relevant
+	if ($source == "forms") {
+		$rsslink = "?forms";
+	} else if ($source == "characters") {
+		$rsslink = "?chars";
+	}
+	
+	if ($userid) {
+		$rsslink .= "&id=".$userid;
+	}
+	
+	if (isset($rsslink)) {
+		$tr['%rss%'] = "<a class=\"rss button\" href=\"./rss.php$rsslink\">RSS-flöde</a>";
+	}
+	
+	// Combine
 	$body = file_get_contents('template/datalist_tpl.html');
 	$body = strtr($body,$tr);
 	return template($body);
