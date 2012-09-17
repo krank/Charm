@@ -28,7 +28,7 @@ function editchar() {
 		// --- Get values from POST, and save them to database ---
 		
 		if (isset($_POST['name'], $_POST['system'], $_POST['xml'], $_POST['public'], $_POST['charid'])) {
-
+			
 			// Clean the POST
 			$datasource = clean_array($_POST, array('charid','name', 'system', 'desc', 'public', 'xml'));
 
@@ -44,8 +44,7 @@ function editchar() {
 
 			// If save has been set, save it if the user has ownership
 
-			if (isset($_POST['submit']) && count($errors) == 0) {
-
+			if (isset($_POST['save']) && count($errors) == 0) {
 				// If formid has been set...
 				if ($datasource['charid'] != "") {
 					// Overwrite

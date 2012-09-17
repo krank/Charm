@@ -143,8 +143,8 @@ $(document).ready(function() {
 	
 	$('#save').click(function(){
 		makeXML();
+		//document.charform.submit();
 	});
-	
 });
 
 function makenum(numstr) {
@@ -171,6 +171,7 @@ function addtovalue($box, addition) {
 }
 
 function makeXML() {
+	
 	// Create an XML document
 	text = "<form></form>";
 	if (window.DOMParser) {
@@ -181,6 +182,7 @@ function makeXML() {
 		xmlDoc.async="false";
 		xmlDoc.loadXML(text);
 	}
+	
 	
 	
 	// Add a <group>-element for each group, with title=groupname.text()
@@ -210,6 +212,7 @@ function makeXML() {
 				
 				// Create the element & insert it
 				
+				
 				fieldelem = xmlDoc.createElement("field");
 				rowelem.appendChild(fieldelem);
 				
@@ -238,9 +241,13 @@ function makeXML() {
 					value = "";
 				}
 				
-				var textNode = document.createTextNode (value);
+				
+				
+				var textNode = xmlDoc.createTextNode (value);
 				fieldelem.appendChild (textNode);
 				fieldelem.setAttribute('type',type);
+				
+				
 				
 			})
 			
@@ -248,11 +255,14 @@ function makeXML() {
 		
 	})
 	
+	
+	
 	// Serialize the XML document and put it into the hidden XML <input>, which is first cleared
 	
 	var string;
 	if (window.ActiveXObject) { // code for IE
-		string = xmlobject.xml;
+		string = xmlDoc.xml;
+		
 	} else { // code for Mozilla, Firefox, Opera, etc.
 		string = (new XMLSerializer()).serializeToString(xmlDoc);
 	}

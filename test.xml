@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+	<channel>
+		<title>Rollperson.se: Rollpersoner</title>
+		<link>http://testbed.rollperson.se/?do=listchars</link>
+		<description>Rollpersoner från Rollperson.se</description>
+		<item>
+			<title>Kurre Fisk (System: BRP) skapad av Hans</title>
+			<description>En stilig karl</description>
+			<pubDate>Sat, 23 Jul 11 21:11:16 +0200</pubDate>
+			<link>http://testbed.rollperson.se/?do=showcharcharid=28</link>
+			<guid>character28</guid>
+		</item>
+		</channel>
+			</rss>

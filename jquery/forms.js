@@ -510,7 +510,7 @@ function makeXML() {
 				contentelem = $(this).find('input')
 
 				if (!contentelem.hasClass('empty')) {
-					var textNode = document.createTextNode (contentelem.attr('value'));
+					var textNode = xmlDoc.createTextNode (contentelem.attr('value'));
 					fieldelem.appendChild (textNode);
 				}
 				
@@ -541,7 +541,7 @@ function makeXML() {
 	
 	var string;
 	if (window.ActiveXObject) { // code for IE
-		string = xmlobject.xml;
+		string = xmlDoc.xml;
 	} else { // code for Mozilla, Firefox, Opera, etc.
 		string = (new XMLSerializer()).serializeToString(xmlDoc);
 	}

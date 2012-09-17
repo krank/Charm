@@ -83,7 +83,7 @@ function editform() {
 
 			// If save has been set, save it if the user has ownership
 
-			if (isset($_POST['submit']) && count($errors) == 0) {
+			if (isset($_POST['save']) && count($errors) == 0) {
 
 				// If formid has been set...
 				if ($datasource['formid'] != "") {
