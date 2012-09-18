@@ -143,7 +143,6 @@ $(document).ready(function() {
 	
 	$('#save').click(function(){
 		makeXML();
-		//document.charform.submit();
 	});
 });
 
@@ -174,10 +173,10 @@ function makeXML() {
 	
 	// Create an XML document
 	text = "<form></form>";
-	if (window.DOMParser) {
+	if (window.DOMParser) { // code for Mozilla, Firefox, Opera, IE9+ etc.
 		parser=new DOMParser();
 		xmlDoc=parser.parseFromString(text,"text/xml");
-	} else {// Internet Explorer
+	} else {// Old Internet Explorer
 		xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
 		xmlDoc.async="false";
 		xmlDoc.loadXML(text);
@@ -200,11 +199,11 @@ function makeXML() {
 		// Add <row>-elements to each group
 
 		$(this).find('tr').each(function(){
+		
 			rowelem = xmlDoc.createElement("row");
 			rowelem.setAttribute('id',$(this).attr('id'));
 			
 			groupelem.appendChild(rowelem);
-
 
 			// Add <field>-elements to each group, with type=field type and contents=value
 			
@@ -242,9 +241,11 @@ function makeXML() {
 				}
 				
 				
-				
+				// Create new text node and insert it into the XMLdoc
 				var textNode = xmlDoc.createTextNode (value);
 				fieldelem.appendChild (textNode);
+				
+				// Set the field's type
 				fieldelem.setAttribute('type',type);
 				
 				
@@ -257,14 +258,12 @@ function makeXML() {
 	
 	
 	
-	// Serialize the XML document and put it into the hidden XML <input>, which is first cleared
-	
+	// Serialize the XML document and put it into the hidden XML <input>
 	var string;
-	if (window.ActiveXObject) { // code for IE
-		string = xmlDoc.xml;
-		
-	} else { // code for Mozilla, Firefox, Opera, etc.
+	if (window.XMLSerializer) { // code for Mozilla, Firefox, Opera, IE9+ etc.
 		string = (new XMLSerializer()).serializeToString(xmlDoc);
+	} else { // code for old IE
+		string = xmlDoc.xml;
 	}
 	
 	$('#xml').attr('value',string);
